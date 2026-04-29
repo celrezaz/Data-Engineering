@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_google_sheet__budget
+    description: "Table budget"
+    columns: 
+      - name: row
+      - name: quantity
+      - name: month
+      - name: product_id
+      - name: _fivetran_synced
+
+  - name: stg_postgres_db__addresses
+    columns:
+      - name: address_id
+      - name: zipcode
+      - name: country
+      - name: address
+      - name: state
+      - name: _fivetran_deleted
+      - name: _fivetran_synced
+
+  - name: stg_postgres_db__orderitems
+    columns:
+      - name: order_id
+      - name: product_id
+      - name: quantity
+      - name: _fivetran_deleted
+      - name: _fivetran_synced
+
+  - name: stg_postgres_db__orders
+    columns: 
+      - name: order_id
+      - name: shipping_service
+      - name: shipping_cost 
+      - name: address_id
+      - name: created_at
+      - name: promo_id
+      - name: estimated_delivery_at
+      - name: order_cost
+  
+  - name: stg_postgres_db__products
+    columns: 
+      - name: product_id
+      - name: price
+      - name: name
+      - name: inventory
+      - name: _fivetran_deleted
+      - name: _fivetran_synced
+  
+  - name: stg_postgres_db__promos
+    columns: 
+      - name: promo_id
+      - name: discount
+      - name: status 
+      - name: _fivetran_deleted
+      - name: _fivetran_synced
+
+  - name: stg_postgres_db__user
+    columns: 
+      - name: user_id
+      - name: updated_at
+      - name: address_id 
+      - name: last_name
+      - name: created_at
+      - name: phone_number
+      - name: total_orders
+      - name: first_name
+      - name: email 
+      - name: _fivetran_deleted
+      - name: _fivetran_synced

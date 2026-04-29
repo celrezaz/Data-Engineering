@@ -1,0 +1,92 @@
+sources:
+
+  - name: postgres_db # name of the source 
+    schema: postgres_db # this is the schema our raw data lives in
+    database: db16_BRONZE_DB # this is the name of our database
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    config: 
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
+
+    tables:
+
+      - name: addresses #name of the table
+        config: 
+          loaded_at_field: _fivetran_synced
+        columns:
+          - name: address_id
+          - name: zipcode
+          - name: country
+          - name: address
+          - name: state
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
+      - name: orderitems #name of the table
+        config: 
+          loaded_at_field: _fivetran_synced
+        columns:
+          - name: order_id
+          - name: product_id
+          - name: quantity
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
+      - name: orders
+        config: 
+          loaded_at_field: _fivetran_synced
+        columns: 
+          - name: order_id
+          - name: shipping_service
+          - name: shipping_cost 
+          - name: address_id
+          - name: created_at
+          - name: promo_id
+          - name: estimated_delivery_at
+          - name: order_cost
+
+      - name: products
+        config: 
+          loaded_at_field: _fivetran_synced
+        columns: 
+          - name: product_id
+          - name: price
+          - name: name
+          - name: inventory
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
+
+
+      - name: promos
+        config: 
+          loaded_at_field: _fivetran_synced
+        columns:
+          - name: promo_id
+          - name: discount
+          - name: status 
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
+
+
+      - name: user
+        config: 
+          loaded_at_field: _fivetran_synced
+        columns:
+          - name: user_id
+          - name: updated_at
+          - name: address_id 
+          - name: last_name
+          - name: created_at
+          - name: phone_number
+          - name: total_orders
+          - name: first_name
+          - name: email 
+          - name: _fivetran_deleted
+          - name: _fivetran_synced
