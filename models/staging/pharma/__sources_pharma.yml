@@ -1,0 +1,43 @@
+version: 2
+
+sources:
+  - name: pharma
+    schema: pharma
+    database: cpd_bronze_db
+    tables:
+      - name: farmacia
+        columns:
+          - name: distributor
+            data_type: varchar
+          - name: customer_name
+            data_type: varchar
+          - name: city
+            data_type: varchar
+          - name: country
+            data_type: varchar
+          - name: latitude
+            data_type: number
+          - name: longitude
+            data_type: number
+          - name: channel
+            data_type: varchar
+          - name: sub_channel
+            data_type: varchar
+          - name: product_name
+            data_type: varchar
+          - name: product_class
+            data_type: varchar
+          - name: quantity
+            data_type: number
+          - name: month
+            data_type: varchar
+          - name: year
+            data_type: varchar
+          - name: name_sales_rep
+            data_type: varchar
+          - name: manager
+            data_type: varchar
+          - name: sales_team
+            data_type: varchar
+          - name: fecha
+            data_type: date

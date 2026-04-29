@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+
+  - name: objectives
+    schema: objectives
+    database: cpd_bronze_db
+
+    tables:
+      - name: objetivos
+        columns:
+          - name: name_sales_rep
+            data_type: varchar
+          - name: sales_team
+            data_type: varchar
+          - name: product_name
+            data_type: varchar
+          - name: month
+            data_type: varchar
+          - name: year
+            data_type: date
+          - name: objective
+            data_type: number
