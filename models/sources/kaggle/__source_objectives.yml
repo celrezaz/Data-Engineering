@@ -2,12 +2,12 @@ version: 2
 
 sources:
 
-  - name: objectives
-    schema: objectives
+  - name: kaggle
+    schema: kaggle
     database: cpd_bronze_db
 
     tables:
-      - name: objetivos
+      - name: objectives
         columns:
           - name: name_sales_rep
             data_type: varchar

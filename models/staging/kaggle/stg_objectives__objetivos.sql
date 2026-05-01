@@ -2,7 +2,7 @@ with
 
 source as (
 
-    select * from {{ source('objectives', 'objetivos') }}
+    select * from {{ source('kaggle', 'objectives') }}
 
 ),
 
