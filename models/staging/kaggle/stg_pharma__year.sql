@@ -10,8 +10,8 @@ source as (
 
 renamed as (
 
-    select
-        year
+    select distinct (year), 
+    cast(md5(trim(cast(year as varchar))) as varchar) as year_id
 
     from source
 

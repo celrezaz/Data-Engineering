@@ -4,16 +4,19 @@ source as (
 
     select 
         channel,
-        sub_channel
+        subchannel
     from {{ source('kaggle', 'farmacia') }}
 
 ),
 
 renamed as (
 
-    select
+    select distinct
         channel,
-        sub_channel
+        subchannel,
+        cast(md5(lower(trim(subchannel)) || cast(channel as varchar)) as varchar) as subchannel_id,
+        cast(md5(lower(trim(cast(channel as varchar)))) as varchar) as channel_id
+
 
     from source
 

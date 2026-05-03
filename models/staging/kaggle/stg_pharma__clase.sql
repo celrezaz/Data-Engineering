@@ -10,8 +10,8 @@ source as (
 
 renamed as (
 
-    select
-        product_class
+    select distinct (product_class), 
+    cast(md5(lower(trim(cast(product_class as varchar)))) as varchar) AS product_class_id
 
     from source
 

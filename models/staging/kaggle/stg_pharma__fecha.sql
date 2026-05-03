@@ -4,6 +4,7 @@ source as (
 
     select 
         month,
+        year,
         fecha
     from {{ source('kaggle', 'farmacia') }}
 
@@ -12,11 +13,15 @@ source as (
 renamed as (
 
     select
+        fecha,
         month,
-        fecha
+        cast(md5(lower(trim(month)) || cast(year as varchar)) as varchar) as month_id
 
     from source
 
 )
 
-select * from renamed
+select 
+    fecha,
+    month_id
+ from renamed

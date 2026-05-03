@@ -21,7 +21,7 @@ sources:
             data_type: number
           - name: channel
             data_type: varchar
-          - name: sub_channel
+          - name: subchannel
             data_type: varchar
           - name: product_name
             data_type: varchar

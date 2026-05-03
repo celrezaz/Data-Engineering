@@ -10,8 +10,8 @@ source as (
 
 renamed as (
 
-    select
-        channel
+    select distinct (channel), 
+    cast(md5(lower(trim(cast(channel as varchar)))) as varchar) as channel_id
 
     from source
 
