@@ -14,7 +14,7 @@ renamed as (
     select distinct
         channel,
         subchannel,
-        cast(md5(lower(trim(subchannel)) || cast(channel as varchar)) as varchar) as subchannel_id,
+        cast(md5(lower(trim(cast(subchannel as varchar)))) as varchar) subchannel_id,
         cast(md5(lower(trim(cast(channel as varchar)))) as varchar) as channel_id
 
 

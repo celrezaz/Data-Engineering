@@ -12,7 +12,7 @@ source as (
 
 renamed as (
 
-    select
+    select distinct
         fecha,
         month,
         cast(md5(lower(trim(month)) || cast(year as varchar)) as varchar) as month_id
