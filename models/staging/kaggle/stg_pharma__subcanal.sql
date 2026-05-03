@@ -22,4 +22,8 @@ renamed as (
 
 )
 
-select * from renamed
+select 
+    subchannel,
+    subchannel_id, 
+    channel_id
+from renamed

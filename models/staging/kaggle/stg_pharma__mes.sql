@@ -21,4 +21,7 @@ renamed as (
 
 )
 
-select * from renamed
+select month, 
+month_id, 
+year_id 
+from renamed
