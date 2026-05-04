@@ -3,15 +3,17 @@ with
 source as (
 
     select 
-        channel
+        TRIM(channel) as channel, 
+        {{ crear_id(['channel']) }} as channel_id
     from {{ source('kaggle', 'farmacia') }}
 
 ),
 
 renamed as (
 
-    select distinct (channel), 
-    cast(md5(lower(trim(cast(channel as varchar)))) as varchar) as channel_id
+    select distinct 
+    channel, 
+    channel_id
 
     from source
 
