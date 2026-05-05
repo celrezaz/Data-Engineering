@@ -4,6 +4,7 @@ sources:
   - name: kaggle
     schema: kaggle
     database: cpd_bronze_db
+    
     tables:
       - name: farmacia
         columns:
