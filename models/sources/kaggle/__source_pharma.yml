@@ -41,3 +41,18 @@ sources:
             data_type: varchar
           - name: fecha
             data_type: date
+          
+      - name: objectives
+        columns:
+          - name: name_sales_rep
+            data_type: varchar
+          - name: sales_team
+            data_type: varchar
+          - name: product_name
+            data_type: varchar
+          - name: month
+            data_type: varchar
+          - name: year
+            data_type: date
+          - name: objective
+            data_type: number
