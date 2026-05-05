@@ -33,3 +33,7 @@
         WHEN {{ col }} = 'December' THEN 12
     END
 {% endmacro %}
+
+{% macro mes_code(year_col, month_col) %}
+    TO_VARCHAR({{ year_col }}) || LPAD(TO_VARCHAR({{ month_col }}), 2, '0')
+{% endmacro %}

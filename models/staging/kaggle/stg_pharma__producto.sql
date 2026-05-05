@@ -19,8 +19,8 @@ renamed as (
         {{ dbt_utils.generate_surrogate_key(['product_name']) }} AS product_id,
         {{ dbt_utils.generate_surrogate_key(['product_class']) }} AS product_class_id,
         cast(quantity as decimal (10,3)) AS quantity,
-        cast(precio_coste as decimal (10,3)) AS precio_coste,
-        cast(precio_venta as decimal (10,3)) AS precio_venta
+        TRY_TO_DECIMAL(REPLACE(TRIM(precio_coste), ',', '.'), 10, 3) as precio_coste, 
+        TRY_TO_DECIMAL(REPLACE(TRIM(precio_venta), ',', '.'), 10, 3) as precio_venta
 
     from source
 

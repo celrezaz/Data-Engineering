@@ -8,9 +8,7 @@ source as (
         subchannel,
         product_name,
         name_sales_rep,
-        fecha,
-        month,
-        year
+        fecha
     from {{ source('kaggle', 'farmacia') }}
 
 ),
@@ -20,14 +18,12 @@ renamed as (
     select
         {{ dbt_utils.generate_surrogate_key(['fecha', 'name_sales_rep', 'customer_name', 'product_name']) }} AS linea_venta_id,
         {{ dbt_utils.generate_surrogate_key(['fecha', 'name_sales_rep', 'customer_name']) }} AS venta_id,
-
-        {{ dbt_utils.generate_surrogate_key(['product_name']) }} AS product_id,
-        {{ dbt_utils.generate_surrogate_key(['sales_rep']) }} AS sales_rep_id,
-        {{ dbt_utils.generate_surrogate_key(['customer_name']) }} AS customer_id,
-       
         {{ dbt_utils.generate_surrogate_key(['distributor']) }} AS distributor_id,
+        {{ dbt_utils.generate_surrogate_key(['product_name']) }} AS product_id,
         {{ dbt_utils.generate_surrogate_key(['subchannel']) }} AS subchannel_id,
-         fecha
+        {{ dbt_utils.generate_surrogate_key(['customer_name']) }} AS customer_id,
+         fecha, 
+         {{ dbt_utils.generate_surrogate_key(['name_sales_rep']) }} AS sales_rep_id,
     from source
 
 )

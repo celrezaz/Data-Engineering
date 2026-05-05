@@ -10,7 +10,7 @@ source as (
         product_name,
         month,
         year,
-        objective
+        TRY_TO_DECIMAL(REPLACE(TRIM(objective), ',', '.'), 10, 3) as objective_sales
     
     from {{ source('kaggle', 'objectives') }}
 
@@ -25,7 +25,7 @@ renamed as (
         product_name,
         month,
         year,
-        objective
+        objective_sales
 
     from source
 
