@@ -3,7 +3,7 @@ with
 source as (
 
     select 
-        month(TO_DATE(TRIM(mes), 'MMMM')) as month,
+        {{ mayusculas_nombres('month') }} as month,
         year
     from {{ source('kaggle', 'farmacia') }}
 
@@ -11,17 +11,17 @@ source as (
 
 renamed as (
 
-    select distinct
-        month,
+    select
         year,
-        cast(md5(lower(trim(month)) || cast(year as varchar)) as varchar) as month_id,
-        cast(md5(trim(cast(year as varchar))) as varchar) as year_id
+        month,
+        {{ numero_mes('month') }} as month_number
 
     from source
 
 )
 
-select month, 
-month_id, 
-year_id 
+select distinct
+    year,
+    month_number
+    
 from renamed

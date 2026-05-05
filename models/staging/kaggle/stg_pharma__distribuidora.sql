@@ -12,7 +12,7 @@ renamed as (
 
     select distinct 
     {{ mayusculas_nombres('distributor') }} as distributor, 
-    {{ crear_id(['distributor']) }} as distributor_id
+    {{ dbt_utils.generate_surrogate_key(['distributor']) }} as distributor_id
 
     from source
 

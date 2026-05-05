@@ -12,7 +12,7 @@ renamed as (
 
     select distinct
         country,
-        cast(md5(lower(trim(cast(country as varchar)))) as varchar) AS country_id
+        {{ dbt_utils.generate_surrogate_key(['country']) }} AS country_id
 
     from source
 

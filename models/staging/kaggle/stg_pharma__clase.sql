@@ -12,7 +12,7 @@ renamed as (
 
     select distinct 
     {{ mayusculas_nombres('product_class') }} as product_class, 
-    {{ crear_id(['product_class']) }} as product_class_id
+    {{ dbt_utils.generate_surrogate_key(['product_class']) }} as product_class_id
 
     from source
 

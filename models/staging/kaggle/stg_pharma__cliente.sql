@@ -13,8 +13,8 @@ renamed as (
 
     select distinct
         customer_name,
-        {{ crear_id(['customer_name']) }} as customer_id, 
-        {{ crear_id(['city']) }} as city_id
+        {{ dbt_utils.generate_surrogate_key(['customer_name']) }} as customer_id, 
+        {{ dbt_utils.generate_surrogate_key(['city']) }} as city_id
     from source
 
 )

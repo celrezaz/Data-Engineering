@@ -13,9 +13,9 @@ renamed as (
 
     select distinct
         channel,
+        {{ dbt_utils.generate_surrogate_key(['channel']) }} AS channel_id,
         subchannel,
-        cast(md5(lower(trim(cast(subchannel as varchar)))) as varchar) subchannel_id,
-        cast(md5(lower(trim(cast(channel as varchar)))) as varchar) as channel_id
+        {{ dbt_utils.generate_surrogate_key(['subchannel']) }} AS subchannel_id
 
 
     from source

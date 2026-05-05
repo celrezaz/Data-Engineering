@@ -15,10 +15,9 @@ source as (
 renamed as (
 
     select
-
-        cast(md5(lower(trim(cast(product_name as varchar)))) as varchar) AS product_id,
         cast((trim(cast(product_name as varchar))) as varchar) AS product_name,
-        cast(md5(lower(trim(cast(product_class as varchar)))) as varchar) AS product_class_id,
+        {{ dbt_utils.generate_surrogate_key(['product_name']) }} AS product_id,
+        {{ dbt_utils.generate_surrogate_key(['product_class']) }} AS product_class_id,
         cast(quantity as decimal (10,3)) AS quantity,
         cast(precio_coste as decimal (10,3)) AS precio_coste,
         cast(precio_venta as decimal (10,3)) AS precio_venta

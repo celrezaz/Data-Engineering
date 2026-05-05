@@ -1,0 +1,128 @@
+version: 2
+
+models:
+  - name: stg_objectives__objetivos
+    description: ""
+    columns:
+      - name: name_sales_rep
+        data_type: varchar
+        description: ""
+          
+
+      - name: sales_rep_id
+        data_type: varchar
+        description: ""
+
+      - name: sales_team
+        data_type: varchar
+        description: ""
+
+      - name: product_name
+        data_type: varchar
+        description: ""
+
+      - name: month
+        data_type: varchar
+        description: ""
+
+      - name: year
+        data_type: varchar
+        description: ""
+
+      - name: objective
+        data_type: varchar
+        description: ""
+
+  - name: stg_pharma__canal
+    description: ""
+    columns:
+      - name: channel
+        data_type: varchar
+        description: ""
+
+      - name: channel_id
+        data_type: varchar
+        description: ""
+        tests:
+            - not_null
+            - unique
+
+  - name: stg_pharma__ciudad
+    description: ""
+    columns:
+      - name: city
+        data_type: varchar
+        description: ""
+
+      - name: city_id
+        data_type: varchar
+        description: ""
+
+      - name: country_id
+        data_type: varchar
+        description: ""
+
+      - name: country
+        data_type: varchar
+        description: ""
+
+      - name: latitude
+        data_type: number
+        description: ""
+
+      - name: longitude
+        data_type: number
+        description: ""
+
+  - name: stg_pharma__clase
+    description: ""
+    columns:
+      - name: product_class
+        data_type: varchar
+        description: ""
+
+      - name: product_class_id
+        data_type: varchar
+        description: ""
+
+  - name: stg_pharma__cliente
+    description: ""
+    columns:
+      - name: customer_name
+        data_type: varchar
+        description: ""
+
+      - name: customer_id
+        data_type: varchar
+        description: ""
+
+      - name: city_id
+        data_type: varchar
+        description: ""
+
+  - name: stg_pharma__distribuidora
+    description: ""
+    columns:
+      - name: distributor
+        data_type: varchar
+        description: ""
+
+      - name: distributor_id
+        data_type: varchar
+        description: ""
+
+  - name: stg_pharma__equipoventas
+    description: ""
+    columns:
+      - name: sales_team
+        data_type: varchar
+        description: ""
+
+      - name: sales_team_id
+        data_type: varchar
+        description: ""
+
+      - name: manager_id
+        data_type: varchar
+        description: ""
+

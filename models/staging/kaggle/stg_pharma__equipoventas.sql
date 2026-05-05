@@ -12,9 +12,9 @@ source as (
 renamed as (
 
     select distinct
-        {{ crear_id(['manager']) }} as manager_id, 
+        {{ dbt_utils.generate_surrogate_key(['manager']) }} as manager_id, 
         sales_team,
-        {{ crear_id(['sales_team']) }} as sales_team_id
+        {{ dbt_utils.generate_surrogate_key(['sales_team']) }} as sales_team_id
 
     from source
 

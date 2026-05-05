@@ -12,7 +12,7 @@ renamed as (
 
     select distinct
         manager,
-        {{ crear_id(['manager']) }} AS manager_id
+        {{ dbt_utils.generate_surrogate_key(['manager']) }} AS manager_id
     from source
 
 )

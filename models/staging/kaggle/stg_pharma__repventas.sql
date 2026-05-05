@@ -13,9 +13,9 @@ renamed as (
 
     select distinct
         name_sales_rep,
+        {{ dbt_utils.generate_surrogate_key(['name_sales_rep']) }} AS sales_rep_id,
         sales_team,
-        cast(md5(lower(trim(cast(name_sales_rep as varchar)))) as varchar) AS sales_rep_id,
-        cast(md5(lower(trim(cast(sales_team as varchar)))) as varchar) AS sales_team_id
+        {{ dbt_utils.generate_surrogate_key(['sales_team']) }} AS sales_team_id
 
 
     from source

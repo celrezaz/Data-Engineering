@@ -4,7 +4,7 @@ source as (
 
     select 
         {{ mayusculas_nombres('channel') }} as channel, 
-        {{ crear_id(['channel']) }} as channel_id
+        {{ dbt_utils.generate_surrogate_key(['channel']) }} as channel_id
     from {{ source('kaggle', 'farmacia') }}
 
 ),

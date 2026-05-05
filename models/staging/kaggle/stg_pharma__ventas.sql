@@ -18,23 +18,16 @@ source as (
 renamed as (
 
     select
-        cast(md5(
-            lower(trim(cast(fecha as varchar))) ||
-            lower(trim(cast(name_sales_rep as varchar))) ||
-            lower(trim(cast(customer_name as varchar))) ||
-            lower(trim(cast(product_name as varchar)))) as varchar) as id_linea_venta,
-        cast(md5(
-            lower(trim(cast(fecha as varchar))) ||
-            lower(trim(cast(name_sales_rep as varchar))) ||
-            lower(trim(cast(customer_name as varchar)))) as varchar) as id_venta,
-        cast(md5(lower(trim(month)) || cast(year as varchar)) as varchar) as month_id,
-        cast(md5(lower(trim(cast(product_name as varchar)))) as varchar) as product_id,
-        cast(md5(lower(trim(cast(name_sales_rep as varchar)))) as varchar) as sales_rep_id,
-        cast(md5(lower(trim(cast(customer_name as varchar)))) as varchar) as customer_id,
-        fecha,
-        cast(md5(lower(trim(cast(distributor as varchar)))) as varchar) as distributor_id,
-        cast(md5(lower(trim(cast(subchannel as varchar)))) as varchar) as subchannel_id
+        {{ dbt_utils.generate_surrogate_key(['fecha', 'name_sales_rep', 'customer_name', 'product_name']) }} AS linea_venta_id,
+        {{ dbt_utils.generate_surrogate_key(['fecha', 'name_sales_rep', 'customer_name']) }} AS venta_id,
 
+        {{ dbt_utils.generate_surrogate_key(['product_name']) }} AS product_id,
+        {{ dbt_utils.generate_surrogate_key(['sales_rep']) }} AS sales_rep_id,
+        {{ dbt_utils.generate_surrogate_key(['customer_name']) }} AS customer_id,
+       
+        {{ dbt_utils.generate_surrogate_key(['distributor']) }} AS distributor_id,
+        {{ dbt_utils.generate_surrogate_key(['subchannel']) }} AS subchannel_id,
+         fecha
     from source
 
 )
