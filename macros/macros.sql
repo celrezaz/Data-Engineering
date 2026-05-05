@@ -14,5 +14,5 @@
 
 
 {% macro mayusculas_nombres(col) %}
-    INITCAP(TRIM({{ col }}))
+    INITCAP(TRIM(TO_VARCHAR({{ col }})))
 {% endmacro %}

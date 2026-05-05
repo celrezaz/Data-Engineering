@@ -3,7 +3,7 @@ with
 source as (
 
     select 
-        TRIM(channel) as channel, 
+        {{ mayusculas_nombres('channel') }} as channel, 
         {{ crear_id(['channel']) }} as channel_id
     from {{ source('kaggle', 'farmacia') }}
 

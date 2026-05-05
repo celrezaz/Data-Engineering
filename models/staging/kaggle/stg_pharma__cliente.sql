@@ -13,8 +13,8 @@ renamed as (
 
     select distinct
         customer_name,
-        cast(md5(lower(trim(cast(customer_name as varchar)))) as varchar) AS customer_id,
-        cast(md5(lower(trim(cast(city as varchar)))) as varchar) AS city_id
+        {{ crear_id(['customer_name']) }} as customer_id, 
+        {{ crear_id(['city']) }} as city_id
     from source
 
 )

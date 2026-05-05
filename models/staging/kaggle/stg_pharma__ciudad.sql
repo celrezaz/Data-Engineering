@@ -4,21 +4,18 @@ source as (
 
     select 
         city,
-        country,
-        latitude,
-        longitude
+        {{ crear_id(['city']) }} as city_id,
+        {{ crear_id(['country']) }} as country_id,
+        {{ mayusculas_nombres('country') }} AS country,
+        cast(latitude as decimal (18,5)) as latitude,
+        cast(longitude as decimal (18,5)) as longitude
     from {{ source('kaggle', 'farmacia') }}
 
 ),
 
 renamed as (
 
-    select distinct
-        cast(md5(lower(trim(cast(city as varchar)))) as varchar) AS city_id,
-        city,
-        latitude,
-        longitude, 
-        cast(md5(lower(trim(cast(country as varchar)))) as varchar) AS country_id
+    select distinct *
 
     from source
 

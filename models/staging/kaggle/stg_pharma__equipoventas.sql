@@ -12,17 +12,16 @@ source as (
 renamed as (
 
     select distinct
-        manager,
+        {{ crear_id(['manager']) }} as manager_id, 
         sales_team,
-        cast(md5(lower(trim(cast(manager as varchar)))) as varchar) AS manager_id,
-        cast(md5(lower(trim(cast(sales_team as varchar)))) as varchar) AS sales_team_id
+        {{ crear_id(['sales_team']) }} as sales_team_id
 
     from source
 
 )
 
 select 
-    sales_team_id,
     sales_team,
+    sales_team_id,
     manager_id
 from renamed

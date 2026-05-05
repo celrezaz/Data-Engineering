@@ -3,7 +3,7 @@ with
 source as (
 
     select 
-        month,
+        month(TO_DATE(TRIM(mes), 'MMMM')) as month,
         year
     from {{ source('kaggle', 'farmacia') }}
 

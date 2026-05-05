@@ -4,7 +4,7 @@ source as (
 
     select 
         
-        {{mayusculas_nombres(['name_sales_rep'])}} AS name_sales_rep,
+        {{mayusculas_nombres(('name_sales_rep'))}} AS name_sales_rep,
         {{ crear_id(['name_sales_rep']) }} AS sales_rep_id,
         sales_team,
         product_name,

@@ -10,8 +10,9 @@ source as (
 
 renamed as (
 
-    select distinct (distributor), 
-    cast(md5(lower(trim(cast(distributor as varchar)))) as varchar) AS distributor_id
+    select distinct 
+    {{ mayusculas_nombres('distributor') }} as distributor, 
+    {{ crear_id(['distributor']) }} as distributor_id
 
     from source
 

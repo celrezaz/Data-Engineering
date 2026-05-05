@@ -10,8 +10,9 @@ source as (
 
 renamed as (
 
-    select distinct (product_class), 
-    cast(md5(lower(trim(cast(product_class as varchar)))) as varchar) AS product_class_id
+    select distinct 
+    {{ mayusculas_nombres('product_class') }} as product_class, 
+    {{ crear_id(['product_class']) }} as product_class_id
 
     from source
 

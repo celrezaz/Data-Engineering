@@ -12,7 +12,7 @@ renamed as (
 
     select distinct
         manager,
-        cast(md5(lower(trim(cast(manager as varchar)))) as varchar) AS manager_id
+        {{ crear_id(['manager']) }} AS manager_id
     from source
 
 )
