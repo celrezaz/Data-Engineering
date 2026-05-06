@@ -41,7 +41,7 @@ sources:
           - name: sales_team
             data_type: varchar
           - name: fecha
-            data_type: date
+            data_type: varchar
           
       - name: objectives
         columns:
@@ -49,11 +49,9 @@ sources:
             data_type: varchar
           - name: sales_team
             data_type: varchar
-          - name: product_name
-            data_type: varchar
           - name: month
             data_type: varchar
           - name: year
-            data_type: date
+            data_type: varchar
           - name: objective
-            data_type: number
+            data_type: varchar

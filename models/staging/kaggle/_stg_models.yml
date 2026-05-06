@@ -7,37 +7,32 @@ models:
       - name: name_sales_rep
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: sales_rep_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: sales_team
         data_type: varchar
         description: ""
-        tests:
-          - not_null
-      - name: product_name
-        data_type: varchar
-        description: ""
-        tests:
+        data_tests:
           - not_null
       - name: month
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: year
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: objective_sales
         data_type: number
         description: ""
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_pharma__canal
@@ -46,12 +41,12 @@ models:
       - name: channel
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: channel_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -61,26 +56,27 @@ models:
       - name: city
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: city_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: country_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__pais')
-              field: country_id
+              arguments:
+                to: ref('customers')
+                field: id
       - name: country
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: latitude
         data_type: number
@@ -95,12 +91,12 @@ models:
       - name: product_class
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: product_class_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -110,22 +106,23 @@ models:
       - name: customer_name
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: customer_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: city_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__ciudad')
-              field: city_id
+              arguments:
+                to: ref('stg_pharma__ciudad')
+                field: city_id
 
   - name: stg_pharma__distribuidora
     description: ""
@@ -133,12 +130,12 @@ models:
       - name: distributor
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: distributor_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -148,22 +145,23 @@ models:
       - name: sales_team
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: sales_team_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: manager_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__manager')
-              field: manager_id
+              arguments:
+                to: ref('stg_pharma__manager')
+                field: manager_id
 
   - name: stg_pharma__fecha
     description: ""
@@ -171,17 +169,18 @@ models:
       - name: fecha
         data_type: date
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: mes_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__mes')
-              field: mes_id
+              arguments:
+                to: ref('stg_pharma__mes')
+                field: mes_id
 
   - name: stg_pharma__manager
     description: ""
@@ -189,12 +188,12 @@ models:
       - name: manager
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: manager_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -204,18 +203,18 @@ models:
       - name: mes_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: month
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: year
         data_type: number
         description: ""
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_pharma__pais
@@ -224,12 +223,12 @@ models:
       - name: country
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: country_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -239,36 +238,37 @@ models:
       - name: product_name
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: product_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: product_class_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__clase')
-              field: product_class_id
+              arguments:
+                to: ref('stg_pharma__clase')
+                field: product_class_id
       - name: quantity
         data_type: number
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: precio_coste
         data_type: number
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: precio_venta
         data_type: number
         description: ""
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_pharma__repventas
@@ -277,21 +277,22 @@ models:
       - name: sales_rep_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: sales_team_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__equipoventas')
-              field: sales_team_id
+              arguments:
+                to: ref('stg_pharma__equipoventas')
+                field: sales_team_id
       - name: name_sales_rep
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_pharma__subcanal
@@ -300,22 +301,23 @@ models:
       - name: subchannel
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: subchannel_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: channel_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__canal')
-              field: channel_id
+              arguments:
+                to: ref('stg_pharma__canal')
+                field: channel_id
 
   - name: stg_pharma__ventas
     description: ""
@@ -323,59 +325,65 @@ models:
       - name: linea_venta_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: venta_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
       - name: distributor_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__distribuidora')
-              field: distributor_id
+              arguments:
+                to: ref('stg_pharma__distribuidora')
+                field: distributor_id
       - name: product_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__producto')
-              field: product_id
+              arguments:
+                to: ref('stg_pharma__producto')
+                field: product_id
       - name: subchannel_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__subcanal')
-              field: subchannel_id
+              arguments:
+                to: ref('stg_pharma__subcanal')
+                field: subchannel_id
       - name: customer_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__cliente')
-              field: customer_id
+              arguments:
+                to: ref('stg_pharma__cliente')
+                field: customer_id
       - name: fecha
         data_type: date
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__fecha')
-              field: fecha
+              arguments:
+                to: ref('stg_pharma__fecha')
+                field: fecha
       - name: sales_rep_id
         data_type: varchar
         description: ""
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              to: ref('stg_pharma__repventas')
-              field: sales_rep_id
+              arguments:
+                to: ref('stg_pharma__repventas')
+                field: sales_rep_id

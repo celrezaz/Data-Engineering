@@ -1,33 +1,73 @@
 with 
 
+canonical as (
+    select 'Abigail Thompson'  as name union all
+    select 'Alan Ray'          union all
+    select 'Anne Wu'           union all
+    select 'Daniel Gates'      union all
+    select 'Erica Jones'       union all
+    select 'Jessica Smith'     union all
+    select 'Jimmy Grey'        union all
+    select 'Mary Gerrard'      union all
+    select 'Morris Garcia'     union all
+    select 'Sheila Stones'     union all
+    select 'Stella Given'      union all
+    select 'Steve Pepple'      union all
+    select 'Thompson Crawford'
+),
+
 source as (
 
-    select 
-        
-        {{mayusculas_nombres(('name_sales_rep'))}} AS name_sales_rep,
-        {{ dbt_utils.generate_surrogate_key(['name_sales_rep']) }} AS sales_rep_id,
-        sales_team,
-        product_name,
-        month,
-        year,
-        TRY_TO_DECIMAL(REPLACE(TRIM(objective), ',', '.'), 10, 3) as objective_sales
-    
-    from {{ source('kaggle', 'objectives') }}
+    select
+        o.name_sales_rep,
+        case
+            when lower(trim(TO_VARCHAR(o.name_sales_rep))) = 'na'
+                then null
+            else c.name
+        end  as name_sales_rep_clean,
+        case
+            when trim(lower(regexp_replace(TO_VARCHAR(o.sales_team), '[^a-zA-Z0-9 ]', ''))) in ('alfa', 'al fa', 'alpha')
+                then 'Alfa'
+            when trim(lower(regexp_replace(TO_VARCHAR(o.sales_team), '[^a-zA-Z0-9 ]', ''))) in ('bravo', 'brav0')
+                then 'Bravo'
+            when trim(lower(regexp_replace(TO_VARCHAR(o.sales_team), '[^a-zA-Z0-9 ]', ''))) in ('charlie', 'charli')
+                then 'Charlie'
+            when trim(lower(regexp_replace(TO_VARCHAR(o.sales_team), '[^a-zA-Z0-9 ]', ''))) in ('delta', 'delt a')
+                then 'Delta'
+            when lower(trim(TO_VARCHAR(o.sales_team))) = 'na'
+                then null
+            else TO_VARCHAR(o.sales_team)
+        end as sales_team,
+        o.month,
+        {{ numero_mes('o.month') }}  as month_number,
+        o.year,
+        TRY_TO_DECIMAL(REPLACE(TRIM(o.objective), ',', '.'), 10, 3) as objective_sales
+
+    from {{ source('kaggle', 'objectives') }} o
+    left join canonical c on true
+    qualify row_number() over (
+        partition by o.name_sales_rep, o.sales_team, o.month, o.year
+        order by JAROWINKLER_SIMILARITY(
+            lower(trim(REGEXP_REPLACE(TO_VARCHAR(o.name_sales_rep), '[^a-zA-Z0-9 ]', ''))),
+            lower(c.name)
+        ) desc
+    ) = 1
 
 ),
 
 renamed as (
 
     select
-        name_sales_rep,
-        sales_rep_id,
-        sales_team,
-        product_name,
-        month,
-        year,
+        {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean', 'year', 'month_number']) }} AS objetivo_id,
+        {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean']) }} as sales_rep_id,
+        {{ mes_code ('year', 'month_number') }} as mes_id,
         objective_sales
 
     from source
+    qualify row_number() over (
+        partition by name_sales_rep_clean, sales_team, month, year
+        order by objective_sales desc nulls last
+    ) = 1
 
 )
 
