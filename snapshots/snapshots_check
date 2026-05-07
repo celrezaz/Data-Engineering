@@ -1,0 +1,16 @@
+{% snapshot snap_dim_producto %}
+
+{{
+    config(
+        target_schema='snapshots',
+        unique_key='product_id',
+        strategy='check',
+        check_cols=['precio_coste', 'precio_venta'],
+        updated_at='',
+        hard_deletes='new_record'
+    )
+}}
+
+select * from {{ ref('stg_pharma__producto') }}
+
+{% endsnapshot %}

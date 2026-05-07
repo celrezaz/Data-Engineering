@@ -2,388 +2,254 @@ version: 2
 
 models:
   - name: stg_objectives__objetivos
-    description: ""
+    description: "Vista con los objetivos comerciales mensuales asignados a cada representante de ventas"
     columns:
-      - name: name_sales_rep
+      - name: objetivo_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Identificador único del objetivo comercial"
+
       - name: sales_rep_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-      - name: sales_team
+        description: "Identificador del representante de ventas asociado al objetivo"
+
+      - name: mes_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-      - name: month
-        data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-      - name: year
-        data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Identificador del mes al que corresponde el objetivo"
+
       - name: objective_sales
         data_type: number
-        description: ""
-        data_tests:
-          - not_null
+        description: "Importe objetivo de ventas definido para el representante comercial en el periodo"
 
   - name: stg_pharma__canal
-    description: ""
+    description: "Vista con los canales comerciales utilizados para clasificar las ventas"
     columns:
       - name: channel
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre del canal comercial: pharmacy/hospital"
+
       - name: channel_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del canal comercial"
 
   - name: stg_pharma__ciudad
-    description: ""
+    description: "Vista con información geográfica de ciudades y países asociados"
     columns:
       - name: city
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre de la ciudad"
+
       - name: city_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único de la ciudad"
+
       - name: country_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('customers')
-                field: id
+        description: "Identificador del país al que pertenece la ciudad"
+
       - name: country
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre del país asociado a la ciudad: Germany/Poland"
+
       - name: latitude
         data_type: number
-        description: ""
+        description: "Latitud geográfica de la ciudad"
+
       - name: longitude
         data_type: number
-        description: ""
+        description: "Longitud geográfica de la ciudad"
 
   - name: stg_pharma__clase
-    description: ""
+    description: "Vista con la clasificación de productos farmacéuticos"
     columns:
       - name: product_class
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre de la clase o categoría del producto"
+
       - name: product_class_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único de la clase de producto"
 
   - name: stg_pharma__cliente
-    description: ""
+    description: "Vista con información básica de clientes"
     columns:
       - name: customer_name
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre del cliente"
+
       - name: customer_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del cliente"
+
       - name: city_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__ciudad')
-                field: city_id
+        description: "Identificador de la ciudad asociada al cliente: Germany/Poland"
 
   - name: stg_pharma__distribuidora
-    description: ""
+    description: "Vista con las distribuidoras farmacéuticas"
     columns:
       - name: distributor
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre de la distribuidora"
+
       - name: distributor_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único de la distribuidora"
 
   - name: stg_pharma__equipoventas
-    description: ""
+    description: "Vista con los equipos comerciales y sus responsables"
     columns:
       - name: sales_team
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre del equipo de ventas"
+
       - name: sales_team_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del equipo de ventas"
+
       - name: manager_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__manager')
-                field: manager_id
+        description: "Identificador del manager responsable del equipo comercial"
 
   - name: stg_pharma__fecha
-    description: ""
+    description: "Vista con fechas de ventas y referencia mensual"
     columns:
       - name: fecha
         data_type: date
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Fecha de la venta"
+
       - name: mes_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__mes')
-                field: mes_id
+        description: "Identificador del mes asociado a la fecha"
 
   - name: stg_pharma__manager
-    description: ""
+    description: "Vista con los managers comerciales"
     columns:
       - name: manager
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre del manager comercial"
+
       - name: manager_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del manager comercial"
 
   - name: stg_pharma__mes
-    description: ""
+    description: "Vista mensual"
     columns:
       - name: mes_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del mes asociado al año"
+
       - name: month
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre del mes"
+
       - name: year
         data_type: number
-        description: ""
-        data_tests:
-          - not_null
+        description: "Año"
 
   - name: stg_pharma__pais
-    description: ""
+    description: "Vista con los países"
     columns:
       - name: country
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre del los país: Germany/Poland"
+
       - name: country_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del país"
 
   - name: stg_pharma__producto
-    description: ""
+    description: "Vista con productos farmacéuticos y precios"
     columns:
       - name: product_name
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre comercial del producto farmacéutico"
+
       - name: product_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del producto"
+
       - name: product_class_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__clase')
-                field: product_class_id
-      - name: quantity
-        data_type: number
-        description: ""
-        data_tests:
-          - not_null
+        description: "Identificador único de la clase del producto"
+
       - name: precio_coste
         data_type: number
-        description: ""
-        data_tests:
-          - not_null
+        description: "Precio de coste durante el periodo de vigencia"
+
       - name: precio_venta
         data_type: number
-        description: ""
-        data_tests:
-          - not_null
+        description: "Precio de venta durante el periodo de vigencia"
+
+      - name: fecha
+        data_type: date
+        description: "Fecha"
 
   - name: stg_pharma__repventas
-    description: ""
+    description: "Vista con representantes comerciales y su organización"
     columns:
       - name: sales_rep_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del representante de ventas"
+
       - name: sales_team_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__equipoventas')
-                field: sales_team_id
+        description: "Identificador único del equipo comercial al que pertenece el representante"
+
       - name: name_sales_rep
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre completo del representante de ventas"
 
   - name: stg_pharma__subcanal
-    description: ""
+    description: "Vistsa con los subcanales comerciales asociados a cada canal principal"
     columns:
       - name: subchannel
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Nombre del subcanal comercial"
+
       - name: subchannel_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único del subcanal comercial"
+
       - name: channel_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__canal')
-                field: channel_id
+        description: "Identificador único del canal comercial"
 
   - name: stg_pharma__ventas
-    description: ""
+    description: "Vista con el detalle transaccional de ventas farmacéuticas"
     columns:
       - name: linea_venta_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - unique
-          - not_null
+        description: "Identificador único de la línea de venta"
+
       - name: venta_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
+        description: "Identificador único de la venta"
+
       - name: distributor_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__distribuidora')
-                field: distributor_id
+        description: "Identificador único de la distribuidora"
+
       - name: product_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__producto')
-                field: product_id
+        description: "Identificador único del producto"
+
       - name: subchannel_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__subcanal')
-                field: subchannel_id
+        description: "Identificador único del subcanal comercial"
+
       - name: customer_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__cliente')
-                field: customer_id
+        description: "Identificador del cliente asociado a la venta"
+
       - name: fecha
         data_type: date
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__fecha')
-                field: fecha
+        description: "Fecha en la que se realizó la venta"
+
       - name: sales_rep_id
         data_type: varchar
-        description: ""
-        data_tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('stg_pharma__repventas')
-                field: sales_rep_id
+        description: "Identificador del representante comercial responsable de la venta"
+
+      - name: quantity
+        data_type: number
+        description: "Cantidad de unidades vendidas en la línea de venta"

@@ -6,8 +6,13 @@ source as (
         product_name,
         product_class, 
         TRY_TO_DECIMAL(REPLACE(TRIM(precio_coste), ',', '.'), 10, 3) as precio_coste, 
-        TRY_TO_DECIMAL(REPLACE(TRIM(precio_venta), ',', '.'), 10, 3) as precio_venta, 
-        fecha
+        TRY_TO_DECIMAL(REPLACE(TRIM(precio_venta), ',', '.'), 10, 3) as precio_venta,
+        MIN(fecha) OVER (
+            PARTITION BY product_name, precio_coste, precio_venta
+        ) as valid_from,
+        MAX(fecha) OVER (
+            PARTITION BY product_name, precio_coste, precio_venta
+        ) as valid_to
     from {{ source('kaggle', 'farmacia') }}
 
 ),
@@ -19,8 +24,9 @@ renamed as (
         {{ dbt_utils.generate_surrogate_key(['product_name']) }} AS product_id,
         {{ dbt_utils.generate_surrogate_key(['product_class']) }} AS product_class_id,
         precio_coste, 
-        precio_venta, 
-        fecha
+        precio_venta,
+        valid_from,
+        valid_to
 
     from source
 
