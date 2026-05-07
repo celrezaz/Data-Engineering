@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: kaggle
     schema: kaggle
-    database: cpd_bronze_db
+    database: dev_bronze_db
     
     tables:
       - name: farmacia
