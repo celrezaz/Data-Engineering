@@ -45,6 +45,7 @@ source as (
 
     from {{ source('kaggle', 'objectives') }} o
     left join canonical c on true
+    where lower(trim(TO_VARCHAR(o.name_sales_rep))) != 'na'
     qualify row_number() over (
         partition by o.name_sales_rep, o.sales_team, o.month, o.year
         order by JAROWINKLER_SIMILARITY(
