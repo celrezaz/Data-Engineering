@@ -55,19 +55,26 @@ source as (
 
 ),
 
+deduped as (
+
+    select *
+    from source
+    qualify row_number() over (
+        partition by {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean', 'year', 'month_number']) }}
+        order by 1
+    ) = 1
+
+),
+
 renamed as (
 
     select
         {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean', 'year', 'month_number']) }} AS objetivo_id,
         {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean']) }} as sales_rep_id,
-        {{ mes_code ('year', 'month_number') }} as mes_id,
+        {{ mes_code('year', 'month_number') }} as mes_id,
         objective_sales
 
-    from source
-    qualify row_number() over (
-        partition by name_sales_rep_clean, sales_team, month, year
-        order by objective_sales desc nulls last
-    ) = 1
+    from deduped
 
 )
 

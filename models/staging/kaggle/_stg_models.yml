@@ -7,18 +7,27 @@ models:
       - name: objetivo_id
         data_type: varchar
         description: "Identificador único del objetivo comercial"
+        tests:
+          - unique
+          - not_null
 
       - name: sales_rep_id
         data_type: varchar
         description: "Identificador del representante de ventas asociado al objetivo"
+        tests:
+          - not_null
 
       - name: mes_id
         data_type: varchar
         description: "Identificador del mes al que corresponde el objetivo"
+        tests:
+          - not_null
 
       - name: objective_sales
         data_type: number
-        description: "Importe objetivo de ventas definido para el representante comercial en el periodo"
+        description: "Importe objetivo de ventas definido para el representante comercial en el periodo. 
+                      Puede ser nulo si el representante no tenía objetivo asignado ese mes 
+                      (dato no registrado en origen)."
 
   - name: stg_pharma__canal
     description: "Vista con los canales comerciales utilizados para clasificar las ventas"
@@ -30,6 +39,8 @@ models:
       - name: channel_id
         data_type: varchar
         description: "Identificador único del canal comercial"
+        tests:
+          - not_null
 
   - name: stg_pharma__ciudad
     description: "Vista con información geográfica de ciudades y países asociados"
@@ -41,10 +52,14 @@ models:
       - name: city_id
         data_type: varchar
         description: "Identificador único de la ciudad"
+        tests:
+          - not_null
 
       - name: country_id
         data_type: varchar
         description: "Identificador del país al que pertenece la ciudad"
+        tests:
+          - not_null
 
       - name: country
         data_type: varchar
@@ -68,6 +83,9 @@ models:
       - name: product_class_id
         data_type: varchar
         description: "Identificador único de la clase de producto"
+        tests:
+          - unique
+          - not_null
 
   - name: stg_pharma__cliente
     description: "Vista con información básica de clientes"
@@ -79,10 +97,15 @@ models:
       - name: customer_id
         data_type: varchar
         description: "Identificador único del cliente"
+        tests:
+          - unique
+          - not_null
 
       - name: city_id
         data_type: varchar
         description: "Identificador de la ciudad asociada al cliente: Germany/Poland"
+        tests:
+          - not_null
 
   - name: stg_pharma__distribuidora
     description: "Vista con las distribuidoras farmacéuticas"
@@ -94,6 +117,9 @@ models:
       - name: distributor_id
         data_type: varchar
         description: "Identificador único de la distribuidora"
+        tests:
+          - unique
+          - not_null
 
   - name: stg_pharma__equipoventas
     description: "Vista con los equipos comerciales y sus responsables"
@@ -105,10 +131,15 @@ models:
       - name: sales_team_id
         data_type: varchar
         description: "Identificador único del equipo de ventas"
+        tests:
+          - unique
+          - not_null
 
       - name: manager_id
         data_type: varchar
         description: "Identificador del manager responsable del equipo comercial"
+        tests:
+          - not_null
 
   - name: stg_pharma__fecha
     description: "Vista con fechas de ventas y referencia mensual"
@@ -116,10 +147,15 @@ models:
       - name: fecha
         data_type: date
         description: "Fecha de la venta"
+        tests:
+          - unique
+          - not_null
 
       - name: mes_id
         data_type: varchar
         description: "Identificador del mes asociado a la fecha"
+        tests:
+          - not_null
 
   - name: stg_pharma__manager
     description: "Vista con los managers comerciales"
@@ -131,6 +167,9 @@ models:
       - name: manager_id
         data_type: varchar
         description: "Identificador único del manager comercial"
+        tests:
+          - unique
+          - not_null
 
   - name: stg_pharma__mes
     description: "Vista mensual"
@@ -138,6 +177,9 @@ models:
       - name: mes_id
         data_type: varchar
         description: "Identificador único del mes asociado al año"
+        tests:
+          - unique
+          - not_null
 
       - name: month
         data_type: varchar
@@ -157,6 +199,9 @@ models:
       - name: country_id
         data_type: varchar
         description: "Identificador único del país"
+        tests:
+          - unique
+          - not_null
 
   - name: stg_pharma__producto
     description: "Vista con productos farmacéuticos y precios"
@@ -168,22 +213,37 @@ models:
       - name: product_id
         data_type: varchar
         description: "Identificador único del producto"
+        tests:
+          - not_null
 
       - name: product_class_id
         data_type: varchar
         description: "Identificador único de la clase del producto"
+        tests:
+          - not_null
 
       - name: precio_coste
         data_type: number
         description: "Precio de coste durante el periodo de vigencia"
+        tests:
+          - not_null
 
       - name: precio_venta
         data_type: number
         description: "Precio de venta durante el periodo de vigencia"
+        tests:
+          - not_null
 
-      - name: fecha
+      - name: valid_from
         data_type: date
-        description: "Fecha"
+        description: "Inicio fecha válida"
+        tests:
+          - not_null
+
+      - name: valid_to
+        data_type: date
+        description: "Fin fecha válida"
+          
 
   - name: stg_pharma__repventas
     description: "Vista con representantes comerciales y su organización"
@@ -191,10 +251,15 @@ models:
       - name: sales_rep_id
         data_type: varchar
         description: "Identificador único del representante de ventas"
+        tests:
+          - unique
+          - not_null
 
       - name: sales_team_id
         data_type: varchar
         description: "Identificador único del equipo comercial al que pertenece el representante"
+        tests:
+          - not_null
 
       - name: name_sales_rep
         data_type: varchar
@@ -210,10 +275,15 @@ models:
       - name: subchannel_id
         data_type: varchar
         description: "Identificador único del subcanal comercial"
+        tests:
+          - unique
+          - not_null
 
       - name: channel_id
         data_type: varchar
         description: "Identificador único del canal comercial"
+        tests:
+          - not_null
 
   - name: stg_pharma__ventas
     description: "Vista con el detalle transaccional de ventas farmacéuticas"
@@ -221,35 +291,55 @@ models:
       - name: linea_venta_id
         data_type: varchar
         description: "Identificador único de la línea de venta"
+        tests:
+          - unique
+          - not_null
 
       - name: venta_id
         data_type: varchar
         description: "Identificador único de la venta"
+        tests:
+          - not_null
 
       - name: distributor_id
         data_type: varchar
         description: "Identificador único de la distribuidora"
+        tests:
+          - not_null
 
       - name: product_id
         data_type: varchar
         description: "Identificador único del producto"
+        tests:
+          - not_null
+
 
       - name: subchannel_id
         data_type: varchar
         description: "Identificador único del subcanal comercial"
+        tests:
+          - not_null
 
       - name: customer_id
         data_type: varchar
         description: "Identificador del cliente asociado a la venta"
+        tests:
+          - not_null
 
       - name: fecha
         data_type: date
         description: "Fecha en la que se realizó la venta"
+        tests:
+          - not_null
 
       - name: sales_rep_id
         data_type: varchar
         description: "Identificador del representante comercial responsable de la venta"
+        tests:
+          - not_null
 
       - name: quantity
         data_type: number
         description: "Cantidad de unidades vendidas en la línea de venta"
+        tests:
+          - not_null

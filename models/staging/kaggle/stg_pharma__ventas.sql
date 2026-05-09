@@ -17,7 +17,7 @@ source as (
 renamed as (
 
     select
-        {{ dbt_utils.generate_surrogate_key(['fecha', 'name_sales_rep', 'customer_name', 'product_name']) }} AS linea_venta_id,
+        {{ dbt_utils.generate_surrogate_key(['fecha', 'name_sales_rep', 'customer_name', 'product_name', 'distributor', 'subchannel', 'quantity']) }} AS linea_venta_id,
         {{ dbt_utils.generate_surrogate_key(['fecha', 'name_sales_rep', 'customer_name']) }} AS venta_id,
         {{ dbt_utils.generate_surrogate_key(['distributor']) }} AS distributor_id,
         {{ dbt_utils.generate_surrogate_key(['product_name']) }} AS product_id,
