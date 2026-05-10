@@ -36,6 +36,9 @@ models:
         description: "Importe objetivo de ventas definido para el representante comercial en el periodo. 
                       Puede ser nulo si el representante no tenía objetivo asignado ese mes 
                       (dato no registrado en origen)."
+        data_tests:
+          - not_null
+          
 
   - name: stg_pharma__canal
     description: "Vista con los canales comerciales utilizados para clasificar las ventas"
@@ -43,6 +46,10 @@ models:
       - name: channel
         data_type: varchar
         description: "Nombre del canal comercial: pharmacy/hospital"
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values: ['Pharmacy', 'Hospital']
 
       - name: channel_id
         data_type: varchar
@@ -62,8 +69,8 @@ models:
         data_type: varchar
         description: "Identificador único de la ciudad"
         data_tests:
-          - unique
           - not_null
+          - unique
 
       - name: country_id
         data_type: varchar
@@ -78,14 +85,11 @@ models:
       - name: country
         data_type: varchar
         description: "Nombre del país asociado a la ciudad: Germany/Poland"
+        data_tests:
+        - accepted_values:
+            arguments:
+              values: ['Germany', 'Poland']
 
-      - name: latitude
-        data_type: number
-        description: "Latitud geográfica de la ciudad"
-
-      - name: longitude
-        data_type: number
-        description: "Longitud geográfica de la ciudad"
 
   - name: stg_pharma__clase
     description: "Vista con la clasificación de productos farmacéuticos"
@@ -124,6 +128,14 @@ models:
               arguments:
                 to: ref('stg_pharma__ciudad')
                 field: city_id
+        
+      - name: latitude
+        data_type: number
+        description: "Latitud geográfica del cliente"
+
+      - name: longitude
+        data_type: number
+        description: "Longitud geográfica del cliente"
 
   - name: stg_pharma__distribuidora
     description: "Vista con las distribuidoras farmacéuticas"
@@ -257,12 +269,16 @@ models:
         description: "Precio de coste durante el periodo de vigencia"
         data_tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
 
       - name: precio_venta
         data_type: number
         description: "Precio de venta durante el periodo de vigencia"
         data_tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
 
       - name: valid_from
         data_type: date

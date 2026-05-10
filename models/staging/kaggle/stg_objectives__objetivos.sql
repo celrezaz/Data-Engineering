@@ -22,7 +22,7 @@ source as (
         o.name_sales_rep,
         case
             when lower(trim(TO_VARCHAR(o.name_sales_rep))) = 'na'
-                then null
+                then 'Unknown'          -- 👈 aquí
             else c.name
         end  as name_sales_rep_clean,
         case
@@ -45,7 +45,6 @@ source as (
 
     from {{ source('kaggle', 'objectives') }} o
     left join canonical c on true
-    where lower(trim(TO_VARCHAR(o.name_sales_rep))) != 'na'
     qualify row_number() over (
         partition by o.name_sales_rep, o.sales_team, o.month, o.year
         order by JAROWINKLER_SIMILARITY(
@@ -53,7 +52,10 @@ source as (
             lower(c.name)
         ) desc
     ) = 1
-
+        and JAROWINKLER_SIMILARITY(
+    lower(trim(REGEXP_REPLACE(TO_VARCHAR(o.name_sales_rep), '[^a-zA-Z0-9 ]', ''))),
+    lower(c.name)
+) > 0.85
 ),
 
 deduped as (
@@ -73,10 +75,13 @@ renamed as (
         {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean', 'year', 'month_number']) }} AS objetivo_id,
         {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean']) }} as sales_rep_id,
         {{ mes_code('year', 'month_number') }} as mes_id,
-        objective_sales
+        objective_sales, 
+        name_sales_rep_clean
 
     from deduped
+    where objective_sales is not null
 
 )
 
 select * from renamed
+order by name_sales_rep_clean desc

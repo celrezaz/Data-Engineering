@@ -3,9 +3,21 @@ with
 source as (
 
     select 
-        manager,
-        sales_team
+        case
+            when lower(trim(TO_VARCHAR(manager))) in ('na', '') then 'Unknown'
+            else COALESCE(manager, 'Unknown')
+        end as manager,
+        case
+            when lower(trim(TO_VARCHAR(sales_team))) in ('na', '') then 'Unknown'
+            else COALESCE(sales_team, 'Unknown')
+        end as sales_team
     from {{ source('kaggle', 'farmacia') }}
+
+    union all
+
+    select
+        'Unknown' as manager,
+        'Unknown' as sales_team
 
 ),
 
@@ -15,7 +27,6 @@ renamed as (
         {{ dbt_utils.generate_surrogate_key(['manager']) }} as manager_id, 
         sales_team,
         {{ dbt_utils.generate_surrogate_key(['sales_team']) }} as sales_team_id
-
     from source
 
 )
