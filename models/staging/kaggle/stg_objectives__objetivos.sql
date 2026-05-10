@@ -22,7 +22,7 @@ source as (
         o.name_sales_rep,
         case
             when lower(trim(TO_VARCHAR(o.name_sales_rep))) = 'na'
-                then 'Unknown'          -- 👈 aquí
+                then 'Unknown'
             else c.name
         end  as name_sales_rep_clean,
         case
@@ -75,8 +75,7 @@ renamed as (
         {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean', 'year', 'month_number']) }} AS objetivo_id,
         {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean']) }} as sales_rep_id,
         {{ mes_code('year', 'month_number') }} as mes_id,
-        objective_sales, 
-        name_sales_rep_clean
+        objective_sales
 
     from deduped
     where objective_sales is not null
@@ -84,4 +83,3 @@ renamed as (
 )
 
 select * from renamed
-order by name_sales_rep_clean desc

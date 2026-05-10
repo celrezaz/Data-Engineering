@@ -32,6 +32,6 @@ renamed as (
 select 
     name_sales_rep, 
     sales_rep_id,
-    sales_team_id, 
+    sales_team_id
     
 from renamed

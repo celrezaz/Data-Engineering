@@ -1,16 +1,18 @@
-{% snapshot snap_dim_producto %}
+{% snapshot representante_ventas_snapshot %}
 
 {{
     config(
         target_schema='snapshots',
-        unique_key='product_id',
+        unique_key='sales_rep_id',
         strategy='check',
-        check_cols=['precio_coste', 'precio_venta'],
-        updated_at='',
-        hard_deletes='new_record'
+        check_cols=['sales_team_id'],
     )
 }}
 
-select * from {{ ref('stg_pharma__producto') }}
+SELECT
+    name_sales_rep,
+    sales_rep_id,
+    sales_team_id
+FROM {{ ref('stg_representante_ventas') }}
 
 {% endsnapshot %}

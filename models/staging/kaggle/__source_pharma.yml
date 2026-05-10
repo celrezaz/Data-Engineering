@@ -13,7 +13,7 @@ sources:
           - name: id_venta
             data_type: varchar
             description: "Identificador único de la transacción de venta"
-            tests:
+            data_tests:
               - not_null
 
           - name: distributor
@@ -51,7 +51,7 @@ sources:
           - name: product_name
             data_type: varchar
             description: "Nombre comercial del producto farmacéutico vendido"
-            tests:
+            data_tests:
               - not_null
 
           - name: product_class
@@ -61,7 +61,7 @@ sources:
           - name: quantity
             data_type: number
             description: "Unidades vendidas en la transacción"
-            tests:
+            data_tests:
               - not_null
 
           - name: precio_coste
@@ -75,7 +75,7 @@ sources:
           - name: sales
             data_type: number
             description: "Importe total de la venta (quantity * precio_venta)"
-            tests:
+            data_tests:
               - not_null
 
           - name: month
@@ -89,13 +89,13 @@ sources:
           - name: fecha
             data_type: date
             description: "Fecha completa de la transacción"
-            tests:
+            data_tests:
               - not_null
 
           - name: name_sales_rep
             data_type: varchar
             description: "Nombre del representante de ventas responsable"
-            tests:
+            data_tests:
               - not_null
 
           - name: manager
@@ -112,7 +112,7 @@ sources:
           - name: name_sales_rep
             data_type: varchar
             description: "Nombre del representante de ventas"
-            tests:
+            data_tests:
               - not_null
 
           - name: sales_team
@@ -122,17 +122,17 @@ sources:
           - name: month
             data_type: varchar
             description: "Mes del objetivo en formato texto"
-            tests:
+            data_tests:
               - not_null
 
           - name: year
             data_type: number
             description: "Año del objetivo"
-            tests:
+            data_tests:
               - not_null
 
           - name: objective
             data_type: varchar
             description: "Importe objetivo de ventas para ese periodo. Almacenado como varchar, requiere casteo en Silver"
-            tests:
+            data_tests:
               - not_null
