@@ -8,6 +8,7 @@ source as (
             else COALESCE(manager, 'Unknown')
         end as manager,
         case
+            when id_venta = 'V23419' then 'Bravo'           
             when lower(trim(TO_VARCHAR(sales_team))) in ('na', '') then 'Unknown'
             else COALESCE(sales_team, 'Unknown')
         end as sales_team
@@ -26,7 +27,8 @@ renamed as (
     select distinct
         {{ dbt_utils.generate_surrogate_key(['manager']) }} as manager_id, 
         sales_team,
-        {{ dbt_utils.generate_surrogate_key(['sales_team']) }} as sales_team_id
+        {{ dbt_utils.generate_surrogate_key(['sales_team']) }} as sales_team_id, 
+        manager
     from source
 
 )
@@ -34,5 +36,6 @@ renamed as (
 select 
     sales_team,
     sales_team_id,
-    manager_id
+    manager_id, 
+    manager
 from renamed
