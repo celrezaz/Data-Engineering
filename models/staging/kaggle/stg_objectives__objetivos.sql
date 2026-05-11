@@ -1,19 +1,7 @@
 with 
 
 canonical as (
-    select 'Abigail Thompson'  as name union all
-    select 'Alan Ray'          union all
-    select 'Anne Wu'           union all
-    select 'Daniel Gates'      union all
-    select 'Erica Jones'       union all
-    select 'Jessica Smith'     union all
-    select 'Jimmy Grey'        union all
-    select 'Mary Gerrard'      union all
-    select 'Morris Garcia'     union all
-    select 'Sheila Stones'     union all
-    select 'Stella Given'      union all
-    select 'Steve Pepple'      union all
-    select 'Thompson Crawford'
+    select name from {{ ref('canonical_sales_reps') }}
 ),
 
 source as (
@@ -21,10 +9,10 @@ source as (
     select
         o.name_sales_rep,
         case
-            when lower(trim(TO_VARCHAR(o.name_sales_rep))) = 'na'
-                then 'Unknown'
+            when lower(trim(TO_VARCHAR(o.name_sales_rep))) in ('NA', 'na', '') then 'Unknown'
+            when o.name_sales_rep is null                                 then 'Unknown'
             else c.name
-        end  as name_sales_rep_clean,
+        end as name_sales_rep_clean,
         case
             when trim(lower(regexp_replace(TO_VARCHAR(o.sales_team), '[^a-zA-Z0-9 ]', ''))) in ('alfa', 'al fa', 'alpha')
                 then 'Alfa'
@@ -34,12 +22,12 @@ source as (
                 then 'Charlie'
             when trim(lower(regexp_replace(TO_VARCHAR(o.sales_team), '[^a-zA-Z0-9 ]', ''))) in ('delta', 'delt a')
                 then 'Delta'
-            when lower(trim(TO_VARCHAR(o.sales_team))) = 'na'
-                then null
+            when lower(trim(TO_VARCHAR(o.sales_team))) in ('NA', 'na', '')      then 'Unknown'
+            when o.sales_team is null                                      then 'Unknown'
             else TO_VARCHAR(o.sales_team)
         end as sales_team,
         o.month,
-        {{ numero_mes('o.month') }}  as month_number,
+        {{ numero_mes('o.month') }} as month_number,
         o.year,
         TRY_TO_DECIMAL(REPLACE(TRIM(o.objective), ',', '.'), 10, 3) as objective_sales
 
@@ -47,15 +35,24 @@ source as (
     left join canonical c on true
     qualify row_number() over (
         partition by o.name_sales_rep, o.sales_team, o.month, o.year
-        order by JAROWINKLER_SIMILARITY(
+        order by case
+            when lower(trim(TO_VARCHAR(o.name_sales_rep))) in ('NA', 'na', '') or o.name_sales_rep is null
+                then 0
+            else JAROWINKLER_SIMILARITY(
+                lower(trim(REGEXP_REPLACE(TO_VARCHAR(o.name_sales_rep), '[^a-zA-Z0-9 ]', ''))),
+                lower(c.name)
+            )
+        end desc
+    ) = 1
+    and (
+        lower(trim(TO_VARCHAR(o.name_sales_rep))) in ('NA', 'na', '')
+        or o.name_sales_rep is null
+        or JAROWINKLER_SIMILARITY(
             lower(trim(REGEXP_REPLACE(TO_VARCHAR(o.name_sales_rep), '[^a-zA-Z0-9 ]', ''))),
             lower(c.name)
-        ) desc
-    ) = 1
-        and JAROWINKLER_SIMILARITY(
-    lower(trim(REGEXP_REPLACE(TO_VARCHAR(o.name_sales_rep), '[^a-zA-Z0-9 ]', ''))),
-    lower(c.name)
-) > 0.85
+        ) > 0.85
+    )
+
 ),
 
 deduped as (

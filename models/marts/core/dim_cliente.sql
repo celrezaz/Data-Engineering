@@ -20,10 +20,10 @@ union_dim as (
         c.city,
         c.city_id,
         c.country_id, 
-        c.latitude, 
-        c.longitude
+        cl.latitude, 
+        cl.longitude
     from cliente cl
-    right join ciudad c
+    left join ciudad c
         on cl.city_id = c.city_id
 ), 
 
@@ -38,7 +38,7 @@ final as (
         d.longitude, 
         p.country
     from union_dim d
-    right join pais p 
+    left join pais p 
         on d.country_id = p.country_id
 ) 
 

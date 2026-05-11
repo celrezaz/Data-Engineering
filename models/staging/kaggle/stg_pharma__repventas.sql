@@ -7,7 +7,11 @@ source as (
             when lower(trim(TO_VARCHAR(name_sales_rep))) in ('na', '') then 'Unknown'
             else COALESCE(name_sales_rep, 'Unknown')
         end as name_sales_rep,
-        sales_team,
+        case
+            when id_venta = 'V23419' then 'Bravo'
+            when lower(trim(TO_VARCHAR(sales_team))) in ('na', '') then 'Unknown'
+            else COALESCE(sales_team, 'Unknown')
+        end as sales_team,
         fecha                                    
     from {{ source('kaggle', 'farmacia') }}
 

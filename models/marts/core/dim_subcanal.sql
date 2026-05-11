@@ -13,7 +13,7 @@ with
         s.subchannel_id, 
         c.channel
         from subcanal s
-        right join canal c
+        left join canal c
         on s.channel_id = c.channel_id
     )
     select *

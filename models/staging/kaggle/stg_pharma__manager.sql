@@ -4,7 +4,7 @@ source as (
 
     select 
         case
-            when lower(trim(TO_VARCHAR(manager))) in ('na', '') then 'Unknown'
+            when lower(trim(TO_VARCHAR(manager))) in ('NA', 'na', '') then 'Unknown'
             else COALESCE(manager, 'Unknown')
         end as manager
     from {{ source('kaggle', 'farmacia') }}

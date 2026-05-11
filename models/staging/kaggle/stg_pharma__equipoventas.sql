@@ -4,12 +4,12 @@ source as (
 
     select 
         case
-            when lower(trim(TO_VARCHAR(manager))) in ('na', '') then 'Unknown'
+            when lower(trim(TO_VARCHAR(manager))) in ('NA', 'na', '') then 'Unknown'
             else COALESCE(manager, 'Unknown')
         end as manager,
         case
             when id_venta = 'V23419' then 'Bravo'           
-            when lower(trim(TO_VARCHAR(sales_team))) in ('na', '') then 'Unknown'
+            when lower(trim(TO_VARCHAR(sales_team))) in ('NA', 'na', '') then 'Unknown'
             else COALESCE(sales_team, 'Unknown')
         end as sales_team
     from {{ source('kaggle', 'farmacia') }}
