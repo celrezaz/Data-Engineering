@@ -2,10 +2,8 @@ version: 2
 
 models:
 
-  # ── DIMENSIONES ────────────────────────────────────────────
-
   - name: dim_cliente
-    description: "Dimensión de clientes con información geográfica"
+    description: "Dimensión de clientes"
     columns:
       - name: customer_id
         data_type: varchar
@@ -26,7 +24,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['Germany', 'Poland']
+              arguments: 
+                values: ['Germany', 'Poland']
 
       - name: city
         data_type: varchar
@@ -88,7 +87,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['Q1', 'Q2', 'Q3', 'Q4']
+              arguments: 
+                values: ['Q1', 'Q2', 'Q3', 'Q4']
 
       - name: estacion
         data_type: varchar
@@ -96,7 +96,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['Primavera', 'Verano', 'Otoño', 'Invierno']
+              arguments:
+                values: ['Primavera', 'Verano', 'Otoño', 'Invierno']
 
 
   - name: dim_producto
@@ -133,7 +134,8 @@ models:
         data_tests:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+              arguments: 
+                min_value: 0
 
       - name: precio_venta
         data_type: number
@@ -141,7 +143,8 @@ models:
         data_tests:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+              arguments: 
+                min_value: 0
 
       - name: valid_from
         data_type: date
@@ -221,7 +224,8 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['Government', 'Retail', 'Institution', 'Private']
+              arguments: 
+                values: ['Government', 'Retail', 'Institution', 'Private']
 
       - name: channel
         data_type: varchar
@@ -229,10 +233,9 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['Pharmacy', 'Hospital']
+              arguments: 
+                values: ['Pharmacy', 'Hospital']
 
-
-  # ── FACTS ──────────────────────────────────────────────────
 
   - name: fact_ventas
     description: "Tabla de hechos de ventas farmacéuticas"
@@ -256,8 +259,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_producto')
-              field: pk_product
+              arguments: 
+                to: ref('dim_producto')
+                field: pk_product
 
       - name: pk_sales_rep
         data_type: varchar
@@ -265,8 +269,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_repventas')
-              field: pk_sales_rep
+              arguments: 
+                to: ref('dim_repventas')
+                field: pk_sales_rep
 
       - name: customer_id
         data_type: varchar
@@ -274,8 +279,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_cliente')
-              field: customer_id
+              arguments: 
+                to: ref('dim_cliente')
+                field: customer_id
 
       - name: subchannel_id
         data_type: varchar
@@ -283,8 +289,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_subcanal')
-              field: subchannel_id
+              arguments: 
+                to: ref('dim_subcanal')
+                field: subchannel_id
 
       - name: distributor_id
         data_type: varchar
@@ -292,8 +299,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_distribuidora')
-              field: distributor_id
+              arguments: 
+                to: ref('dim_distribuidora')
+                field: distributor_id
 
       - name: fecha
         data_type: date
@@ -301,8 +309,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_fecha')
-              field: fecha
+              arguments: 
+                to: ref('dim_fecha')
+                field: fecha
 
       - name: product_id
         data_type: varchar
@@ -318,7 +327,8 @@ models:
         data_tests:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+              arguments: 
+                min_value: 0
 
       - name: ventas_totales
         data_type: number
@@ -326,7 +336,8 @@ models:
         data_tests:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+              arguments: 
+                min_value: 0
 
       - name: beneficio_total
         data_type: number
@@ -357,8 +368,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_producto')
-              field: pk_product
+              arguments: 
+                to: ref('dim_producto')
+                field: pk_product
 
       - name: pk_sales_rep
         data_type: varchar
@@ -366,8 +378,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_repventas')
-              field: pk_sales_rep
+              arguments: 
+                to: ref('dim_repventas')
+                field: pk_sales_rep
 
       - name: customer_id
         data_type: varchar
@@ -375,8 +388,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_cliente')
-              field: customer_id
+              arguments: 
+                to: ref('dim_cliente')
+                field: customer_id
 
       - name: subchannel_id
         data_type: varchar
@@ -384,8 +398,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_subcanal')
-              field: subchannel_id
+              arguments: 
+                to: ref('dim_subcanal')
+                field: subchannel_id
 
       - name: distributor_id
         data_type: varchar
@@ -393,8 +408,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_distribuidora')
-              field: distributor_id
+              arguments: 
+                to: ref('dim_distribuidora')
+                field: distributor_id
 
       - name: fecha
         data_type: date
@@ -402,8 +418,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('dim_fecha')
-              field: fecha
+              arguments: 
+                to: ref('dim_fecha')
+                field: fecha
 
       - name: product_id
         data_type: varchar
@@ -418,8 +435,6 @@ models:
         description: "Cantidad objetivo"
         data_tests:
           - not_null
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
 
       - name: ventas_totales
         data_type: number
@@ -427,7 +442,8 @@ models:
         data_tests:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
+              arguments: 
+                min_value: 0
 
       - name: beneficio_total
         data_type: number

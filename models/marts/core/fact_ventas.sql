@@ -1,3 +1,9 @@
+{{ config(
+    materialized='incremental',
+    unique_key='fecha',
+    incremental_strategy='delete+insert'
+) }}
+
 with ventas as (
     select
         linea_venta_id,
@@ -10,14 +16,16 @@ with ventas as (
         sales_rep_id,
         quantity
     from {{ ref('stg_pharma__ventas') }}
+
+    {% if is_incremental() %}
+        where fecha >= DATEADD(day, -5, CURRENT_DATE())
+    {% endif %}
 ),
 
 dim_producto as (
     select
         pk_product,
         product_id,
-        product_name,
-        product_class,
         precio_coste,
         precio_venta,
         valid_from,
@@ -29,9 +37,6 @@ dim_rep as (
     select
         pk_sales_rep,
         sales_rep_id,
-        name_sales_rep,
-        sales_team,
-        manager,
         valid_from,
         valid_to,
         is_current
@@ -65,8 +70,7 @@ dim_distribuidora as (
 ),
 
 dim_fecha as (
-    select *
-    from {{ ref('dim_fecha') }}
+    select * from {{ ref('dim_fecha') }}
 ),
 
 fact as (
@@ -82,14 +86,17 @@ fact as (
         v.product_id,
         v.sales_rep_id,
         v.quantity,
-        p.precio_venta * v.quantity as ventas_totales,
+        p.precio_venta * v.quantity                    as ventas_totales,
         (p.precio_venta - p.precio_coste) * v.quantity as beneficio_total
 
     from ventas v
     left join dim_producto p
-        on v.product_id = p.product_id         
+        on  v.product_id = p.product_id
+        and v.fecha >= p.valid_from
+        and (v.fecha < p.valid_to or p.valid_to is null)
     left join dim_rep r
         on  v.sales_rep_id = r.sales_rep_id
+        and r.is_current = true
     left join dim_cliente c
         on v.customer_id = c.customer_id
     left join dim_subcanal s

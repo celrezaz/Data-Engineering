@@ -69,7 +69,11 @@ renamed as (
         precio_coste,
         precio_venta,
         valid_from,
-        valid_to
+        case
+            when valid_to = MAX(valid_to) OVER (PARTITION BY product_name)
+            then null
+            else valid_to
+        end as valid_to
     from cleaned
 
 )
