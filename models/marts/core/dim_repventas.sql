@@ -44,4 +44,3 @@ dim as (
 
 select *
 from dim
-order by name_sales_rep, valid_from

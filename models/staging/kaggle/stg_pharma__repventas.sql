@@ -24,18 +24,6 @@ source as (
 
 ),
 
-latest as (                                      
-
-    select distinct
-        name_sales_rep,
-        first_value(sales_team) over (
-            partition by name_sales_rep
-            order by fecha desc nulls last       
-        ) as sales_team
-    from source
-
-),
-
 renamed as (
 
     select distinct
@@ -44,11 +32,11 @@ renamed as (
         {{ dbt_utils.generate_surrogate_key(['name_sales_rep']) }} as sales_rep_id,
         sales_team,
         {{ dbt_utils.generate_surrogate_key(['sales_team']) }} as sales_team_id
-    from latest                                  
+    from source                                  
 
 )
 
-select 
+select distinct
     pk_sales_rep,
     name_sales_rep, 
     sales_rep_id,

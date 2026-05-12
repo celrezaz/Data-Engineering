@@ -74,7 +74,8 @@ source as (
 
 deduped as (
 
-    select *
+    select *, 
+    {{ mes_code('year', 'month_number') }} as mes_id
     from source
     qualify row_number() over (
         partition by {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean', 'year', 'month_number']) }}
@@ -86,9 +87,9 @@ deduped as (
 renamed as (
 
     select
-        {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean', 'year', 'month_number']) }}    as objetivo_id,
-        {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean']) }}                            as sales_rep_id,
-        {{ mes_code('year', 'month_number') }}                                                      as mes_id,
+        {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean', 'year', 'mes_id']) }}          as objetivo_id,
+        {{ dbt_utils.generate_surrogate_key(['name_sales_rep_clean']) }}                            as sales_rep_id, 
+        mes_id,                                                     
         objective_sales
 
     from deduped

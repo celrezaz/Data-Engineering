@@ -6,6 +6,7 @@ clase as (
     from {{ ref('stg_pharma__clase') }}), 
 union_dim as (
     select
+        p.is_current,
         p.pk_product, 
         p.product_name, 
         p.product_id,
@@ -29,5 +30,6 @@ select
     precio_coste, 
     precio_venta, 
     valid_from, 
-    valid_to
+    valid_to, 
+    is_current
 from union_dim
