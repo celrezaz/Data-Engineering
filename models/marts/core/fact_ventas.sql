@@ -91,14 +91,9 @@ fact as (
         and (p.valid_to is null or v.fecha <= p.valid_to)
     
     left join dim_rep r
-        on  v.sales_rep_id = r.sales_rep_id
-        and (
-            (r.valid_to is null and r.is_current = true)
-            or
-            (r.valid_to is not null
-                and v.fecha >= r.valid_from
-                and v.fecha <  r.valid_to)
-        )
+    on v.sales_rep_id = r.sales_rep_id
+    and v.fecha >= r.valid_from
+    and (r.valid_to is null or v.fecha <= r.valid_to)
 
     left join dim_cliente c
         on v.customer_id   = c.customer_id

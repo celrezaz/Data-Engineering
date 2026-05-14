@@ -1,6 +1,6 @@
 with rep_ventas as (
     select 
-        sk_sales_rep,
+        dbt_scd_id as sk_sales_rep,
         sales_rep_id,
         sales_team_id,
         name_sales_rep,
@@ -42,5 +42,5 @@ dim as (
         on e.manager_id = m.manager_id
 )
 
-select *
+select distinct *
 from dim
