@@ -1,6 +1,6 @@
 with rep_ventas as (
     select 
-        dbt_scd_id as sk_sales_rep,
+        sk_sales_rep,
         sales_rep_id,
         sales_team_id,
         name_sales_rep,
@@ -32,8 +32,8 @@ dim as (
         r.name_sales_rep,
         e.sales_team,
         m.manager,
-        r.dbt_valid_from as valid_from,
-        r.dbt_valid_to as valid_to,
+        cast(r.dbt_valid_from as date)as valid_from,
+        cast(r.dbt_valid_to as date) as valid_to,
         r.is_current
     from rep_ventas r
     left join equipo_ventas e 
