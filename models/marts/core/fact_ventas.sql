@@ -14,7 +14,7 @@ with ventas as (
 
 dim_producto as (
     select
-        pk_product,
+        sk_product,
         product_id,
         product_name,
         product_class,
@@ -28,7 +28,7 @@ dim_producto as (
 
 dim_rep as (
     select
-        pk_sales_rep,
+        sk_sales_rep,
         sales_rep_id,
         name_sales_rep,
         sales_team,
@@ -74,8 +74,8 @@ fact as (
     select
         v.linea_venta_id,
         v.venta_id,
-        p.pk_product,
-        r.pk_sales_rep,
+        p.sk_product,
+        r.sk_sales_rep,
         c.customer_id,
         s.subchannel_id,
         d.distributor_id,
@@ -86,15 +86,10 @@ fact as (
 
     from ventas v
     left join dim_producto p
-        on  v.product_id = p.product_id
-        and (
-            (p.valid_to is null and p.is_current = true)
-            or
-            (p.valid_to is not null
-                and v.fecha >= p.valid_from
-                and v.fecha <  p.valid_to)
-        )
-
+        on v.product_id = p.product_id
+        and v.fecha >= p.valid_from
+        and (p.valid_to is null or v.fecha <= p.valid_to)
+    
     left join dim_rep r
         on  v.sales_rep_id = r.sales_rep_id
         and (
@@ -119,4 +114,3 @@ fact as (
 )
 
 select * from fact
-order by linea_venta_id desc

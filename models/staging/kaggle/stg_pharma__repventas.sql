@@ -27,7 +27,7 @@ source as (
 renamed as (
 
     select distinct
-        {{ dbt_utils.generate_surrogate_key(['name_sales_rep', 'sales_team']) }} as pk_sales_rep,
+        {{ dbt_utils.generate_surrogate_key(['name_sales_rep', 'sales_team']) }} as sk_sales_rep,
         name_sales_rep,
         {{ dbt_utils.generate_surrogate_key(['name_sales_rep']) }} as sales_rep_id,
         sales_team,
@@ -37,7 +37,7 @@ renamed as (
 )
 
 select distinct
-    pk_sales_rep,
+    sk_sales_rep,
     name_sales_rep, 
     sales_rep_id,
     sales_team_id

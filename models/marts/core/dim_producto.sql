@@ -7,7 +7,7 @@ clase as (
 union_dim as (
     select
         p.is_current,
-        p.pk_product, 
+        p.sk_product, 
         p.product_name, 
         p.product_id,
         c.product_class_id,
@@ -23,7 +23,7 @@ union_dim as (
 )
 
 select 
-    pk_product, 
+    sk_product, 
     product_name, 
     product_id, 
     product_class, 

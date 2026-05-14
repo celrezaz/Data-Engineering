@@ -98,7 +98,7 @@ cleaned as (
 
 renamed as (
     select
-        {{ dbt_utils.generate_surrogate_key(['product_name', 'valid_from']) }} as pk_product,
+        {{ dbt_utils.generate_surrogate_key(['product_name', 'valid_from']) }} as sk_product,
         product_name,
         {{ dbt_utils.generate_surrogate_key(['product_name']) }}               as product_id,
         {{ dbt_utils.generate_surrogate_key(['product_class']) }}              as product_class_id,

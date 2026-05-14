@@ -3,7 +3,7 @@
 {{
     config(
         target_schema='snapshots',
-        unique_key='sales_rep_id',
+        unique_key='sk_sales_rep',
         strategy='check',
         check_cols=['sales_team_id']
     )

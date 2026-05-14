@@ -103,7 +103,7 @@ models:
   - name: dim_producto
     description: "Dimensión de productos farmacéuticos con SCD tipo 2"
     columns:
-      - name: pk_product
+      - name: sk_product
         data_type: varchar
         description: "SK surrogate (PK del SCD2)"
         data_tests:
@@ -160,7 +160,7 @@ models:
   - name: dim_repventas
     description: "Dimensión de representantes de ventas con SCD tipo 2"
     columns:
-      - name: pk_sales_rep
+      - name: sk_sales_rep
         data_type: varchar
         description: "SK surrogate (PK del SCD2)"
         data_tests:
@@ -253,7 +253,7 @@ models:
         data_tests:
           - not_null
 
-      - name: pk_product
+      - name: sk_product
         data_type: varchar
         description: "FK → dim_producto (SK del SCD2)"
         data_tests:
@@ -261,9 +261,9 @@ models:
           - relationships:
               arguments: 
                 to: ref('dim_producto')
-                field: pk_product
+                field: sk_product
 
-      - name: pk_sales_rep
+      - name: sk_sales_rep
         data_type: varchar
         description: "FK → dim_repventas (SK del SCD2)"
         data_tests:
@@ -271,7 +271,7 @@ models:
           - relationships:
               arguments: 
                 to: ref('dim_repventas')
-                field: pk_sales_rep
+                field: sk_sales_rep
 
       - name: customer_id
         data_type: varchar
@@ -350,7 +350,7 @@ models:
           - not_null
           - unique
 
-      - name: pk_sales_rep
+      - name: sk_sales_rep
         data_type: varchar
         description: "Surrogate key del representante de ventas"
         tests:
@@ -358,7 +358,7 @@ models:
           - relationships:
               arguments: 
                 to: ref('dim_repventas')
-                field: pk_sales_rep
+                field: sk_sales_rep
 
       - name: mes_id
         data_type: varchar
@@ -402,7 +402,7 @@ models:
         tests:
           - not_null
 
-      - name: pk_product
+      - name: sk_product
         data_type: varchar
         description: "Surrogate key del producto (FK a dim_producto, SCD2)"
         tests:
@@ -410,9 +410,9 @@ models:
           - relationships:
               arguments: 
                 to: ref('dim_producto')
-                field: pk_product
+                field: sk_product
 
-      - name: pk_sales_rep
+      - name: sk_sales_rep
         data_type: varchar
         description: "Surrogate key del representante de ventas (FK a dim_repventas, SCD2)"
         tests:
@@ -420,7 +420,7 @@ models:
           - relationships:
               arguments: 
                 to: ref('dim_repventas')
-                field: pk_sales_rep
+                field: sk_sales_rep
 
       - name: customer_id
         data_type: varchar

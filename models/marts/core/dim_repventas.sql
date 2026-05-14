@@ -1,6 +1,6 @@
 with rep_ventas as (
     select 
-        pk_sales_rep,
+        sk_sales_rep,
         sales_rep_id,
         sales_team_id,
         name_sales_rep,
@@ -27,7 +27,7 @@ manager as (
 
 dim as (
     select
-        r.pk_sales_rep,
+        r.sk_sales_rep,
         r.sales_rep_id,
         r.name_sales_rep,
         e.sales_team,

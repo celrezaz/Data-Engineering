@@ -16,7 +16,7 @@ dim_fecha as (
 fact as (
     select
         o.objetivo_id,            
-        r.pk_sales_rep,
+        r.sk_sales_rep,
         f.mes_id,          
         o.sales_rep_id,              
         o.objective_sales

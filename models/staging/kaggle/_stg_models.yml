@@ -295,7 +295,7 @@ models:
   - name: stg_pharma__repventas
     description: "Vista con representantes comerciales y su organización"
     columns:
-      - name: pk_sales_rep
+      - name: sk_sales_rep
         data_type: varchar
         description: "Identificador único del historial del representante de ventas"
         data_tests:
