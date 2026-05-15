@@ -32,7 +32,11 @@ dim as (
         r.name_sales_rep,
         e.sales_team,
         m.manager,
-        cast(r.dbt_valid_from as date)as valid_from,
+        case 
+            when row_number() over (partition by r.sales_rep_id order by r.dbt_valid_from asc) = 1
+            then cast('2000-01-01' as date)
+            else cast(r.dbt_valid_from as date)
+        end as valid_from,
         cast(r.dbt_valid_to as date) as valid_to,
         r.is_current
     from rep_ventas r
@@ -44,3 +48,4 @@ dim as (
 
 select distinct *
 from dim
+order by name_sales_rep, sales_rep_id

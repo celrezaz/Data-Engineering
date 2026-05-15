@@ -33,9 +33,7 @@ models:
 
       - name: objective_sales
         data_type: number
-        description: "Importe objetivo de ventas definido para el representante comercial en el periodo. 
-                      Puede ser nulo si el representante no tenía objetivo asignado ese mes 
-                      (dato no registrado en origen)."
+        description: "Importe objetivo de ventas definido para el representante comercial en el periodo"
         data_tests:
           - not_null
           
@@ -86,9 +84,9 @@ models:
         data_type: varchar
         description: "Nombre del país asociado a la ciudad: Germany/Poland"
         data_tests:
-        - accepted_values:
-            arguments:
-              values: ['Germany', 'Poland', 'Unknown']
+          - accepted_values:
+              arguments:
+                values: ['Germany', 'Poland', 'Unknown']
 
 
   - name: stg_pharma__clase
@@ -244,6 +242,14 @@ models:
   - name: stg_pharma__producto
     description: "Vista con productos farmacéuticos y precios"
     columns:
+
+      - name: sk_product
+        data_type: varchar
+        description: "Identificador único del histórico del producto (product_id + valid_from)"
+        data_tests:
+          - not_null
+          - unique
+
       - name: product_name
         data_type: varchar
         description: "Nombre comercial del producto farmacéutico"
@@ -291,6 +297,10 @@ models:
       - name: valid_to
         data_type: date
         description: "Fin fecha válida"
+
+      - name: is_current
+        data_type: boolean
+        description: "Indica si el registro es histórico (false) o actual (true)"
 
   - name: stg_pharma__repventas
     description: "Vista con representantes comerciales y su organización"

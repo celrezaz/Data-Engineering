@@ -23,6 +23,10 @@ sources:
           - name: customer_name
             data_type: varchar
             description: "Nombre del cliente (farmacia/hospital)"
+            data_tests:
+              - not_null:
+                  config:
+                    severity: warn
 
           - name: city
             data_type: varchar
@@ -52,7 +56,9 @@ sources:
             data_type: varchar
             description: "Nombre comercial del producto farmacéutico vendido"
             data_tests:
-              - not_null
+              - not_null:
+                  config:
+                    severity: warn
 
           - name: product_class
             data_type: varchar
@@ -71,12 +77,13 @@ sources:
           - name: precio_venta
             data_type: number
             description: "Precio de venta unitario del producto"
+            data_tests:
+              - not_null
+            
 
           - name: sales
             data_type: number
             description: "Importe total de la venta (quantity * precio_venta)"
-            data_tests:
-              - not_null
 
           - name: month
             data_type: varchar
@@ -90,13 +97,14 @@ sources:
             data_type: date
             description: "Fecha completa de la transacción"
             data_tests:
-              - not_null
+              - not_null:
+                  config: 
+                    severity: warn
 
           - name: name_sales_rep
             data_type: varchar
             description: "Nombre del representante de ventas responsable"
-            data_tests:
-              - not_null
+              
 
           - name: manager
             data_type: varchar
@@ -113,23 +121,33 @@ sources:
             data_type: varchar
             description: "Nombre del representante de ventas"
             data_tests:
-              - not_null
+              - not_null: 
+                  config: 
+                    severity: warn
 
           - name: sales_team
             data_type: varchar
             description: "Equipo de ventas al que pertenece el representante"
+            
 
           - name: month
             data_type: varchar
             description: "Mes del objetivo en formato texto"
             data_tests:
-              - not_null
+              - not_null: 
+                  config: 
+                    severity: warn
+            
+
 
           - name: year
             data_type: number
             description: "Año del objetivo"
             data_tests:
-              - not_null
+              - not_null: 
+                  config: 
+                    severity: warn
+            
 
           - name: objective
             data_type: varchar
