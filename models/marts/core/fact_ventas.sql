@@ -1,3 +1,8 @@
+{{ config(
+    materialized='incremental',
+    unique_key='linea_venta_id',
+    incremental_strategy='merge') }}
+
 with ventas as (
     select
         linea_venta_id,
@@ -109,4 +114,3 @@ fact as (
 )
 
 select * from fact
-order by linea_venta_id asc
