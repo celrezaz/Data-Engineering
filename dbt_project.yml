@@ -26,19 +26,19 @@ clean-targets:
 models:
   DataEngineering:
     staging:
-      +database: "{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_SILVER_DB"
+      +database: "{{ env_var('DBT_ENVIRONMENTS') }}_SILVER_DB"
       +schema: staging
       +materialized: view
     
     marts:
-      +database: "{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_GOLD_DB"
+      +database: "{{ env_var('DBT_ENVIRONMENTS') }}_GOLD_DB"
       +schema: marts
       +materialized: table
     
 seeds:
-  +database: "{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_BRONZE_DB"
+  +database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"
   +schema: seed_data
   
 snapshots:
-  +target_database: "{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_SILVER_DB"
+  +target_database: "{{ env_var('DBT_ENVIRONMENTS') }}_SILVER_DB"
   +target_schema: snapshots
