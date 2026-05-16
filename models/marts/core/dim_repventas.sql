@@ -37,7 +37,10 @@ dim as (
             then cast('2000-01-01' as date)
             else cast(r.dbt_valid_from as date)
         end as valid_from,
-        cast(r.dbt_valid_to as date) as valid_to,
+        case
+            when r.dbt_valid_to is null then null
+            else cast(r.dbt_valid_to as date) - interval '1 day'
+        end as valid_to,
         r.is_current
     from rep_ventas r
     left join equipo_ventas e 
@@ -48,4 +51,3 @@ dim as (
 
 select distinct *
 from dim
-order by name_sales_rep, sales_rep_id
