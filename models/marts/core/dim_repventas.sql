@@ -7,8 +7,8 @@ with rep_ventas as (
         dbt_valid_from,
         dbt_valid_to,
         dbt_valid_to is null as is_current
-    from {{ ref('sales_rep_snapshot') }}  
-), 
+    from {{ ref('snapshots_check') }}
+),  
 
 equipo_ventas as (
     select 

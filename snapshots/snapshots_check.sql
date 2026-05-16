@@ -1,11 +1,11 @@
-{% snapshot sales_rep_snapshot %}
+{% snapshot snapshots_check %}
 
 {{
     config(
         target_schema='snapshots',
         unique_key='sales_rep_id',
         strategy='check',
-        check_cols='all'
+        check_cols=['sales_team_id']
     )
 }}
 
