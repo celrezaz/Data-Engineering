@@ -85,6 +85,7 @@ fact as (
         s.subchannel_id,
         d.distributor_id,
         f.fecha,
+        f.mes_id,
         v.quantity,
         p.precio_venta * v.quantity                    as ventas_totales,
         (p.precio_venta - p.precio_coste) * v.quantity as beneficio_total

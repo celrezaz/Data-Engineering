@@ -147,14 +147,21 @@ models:
                 min_value: 0
 
       - name: valid_from
-        data_type: date
+        data_type: timestamp_ntz
         description: "Inicio de vigencia del registro"
         data_tests:
           - not_null
 
       - name: valid_to
-        data_type: date
+        data_type: timestamp_ntz
         description: "Fin de vigencia (null = registro activo)"
+
+      - name: is_current
+        data_type: boolean
+        description: "Indica si es el registro activo del producto"
+        data_tests:
+          - not_null
+          
 
 
   - name: dim_repventas
@@ -192,13 +199,13 @@ models:
           - not_null
 
       - name: valid_from
-        data_type: timestamp_ntz
+        data_type: date
         description: "Inicio de vigencia"
         data_tests:
           - not_null
 
       - name: valid_to
-        data_type: timestamp_ntz
+        data_type: date
         description: "Fin de vigencia (null = registro activo)"
 
       - name: is_current
@@ -244,20 +251,20 @@ models:
       - name: linea_venta_id
         data_type: varchar
         description: "Identificador único de la línea de venta (PK de la fact)"
-        tests:
+        data_tests:
           - not_null
           - unique
 
       - name: venta_id
         data_type: varchar
         description: "Identificador del pedido o venta agrupadora, una venta puede tener varias líneas"
-        tests:
+        data_tests:
           - not_null
 
       - name: sk_product
         data_type: varchar
         description: "Surrogate key del producto (FK a dim_producto, SCD2)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
               arguments: 
@@ -267,7 +274,7 @@ models:
       - name: sk_sales_rep
         data_type: varchar
         description: "Surrogate key del representante de ventas (FK a dim_repventas, SCD2)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
               arguments: 
@@ -277,7 +284,7 @@ models:
       - name: customer_id
         data_type: varchar
         description: "ID del cliente (FK a dim_cliente)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
               arguments: 
@@ -287,7 +294,7 @@ models:
       - name: subchannel_id
         data_type: varchar
         description: "ID del subcanal de venta (FK a dim_subcanal)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
               arguments: 
@@ -297,7 +304,7 @@ models:
       - name: distributor_id
         data_type: varchar
         description: "ID de la distribuidora (FK a dim_distribuidora)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
               arguments: 
@@ -307,7 +314,7 @@ models:
       - name: fecha
         data_type: date
         description: "Fecha de la venta (FK a dim_fecha)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
               arguments: 
@@ -318,19 +325,19 @@ models:
       - name: quantity
         data_type: number
         description: "Cantidad de unidades vendidas en la línea"
-        tests:
+        data_tests:
           - not_null
 
       - name: ventas_totales
         data_type: number
         description: "Importe total de la venta, calculado como precio_venta × quantity"
-        tests:
+        data_tests:
           - not_null
 
 
       - name: beneficio_total
         data_type: number
         description: "Beneficio bruto de la línea, calculado como (precio_venta - precio_coste) × quantity"
-        tests:
+        data_tests:
           - not_null
 

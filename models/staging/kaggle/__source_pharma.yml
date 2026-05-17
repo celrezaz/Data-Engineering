@@ -83,7 +83,7 @@ sources:
 
           - name: sales
             data_type: number
-            description: "Importe total de la venta (quantity * precio_venta)"
+            description: "Importe total de la venta calculado en fuente (quantity * precio_venta)"
 
           - name: month
             data_type: varchar
