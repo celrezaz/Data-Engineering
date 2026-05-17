@@ -96,7 +96,7 @@ models:
         data_type: varchar
         description: "Nombre de la clase o categoría del producto"
         data_tests:
-          - not null
+          - not_null
 
       - name: product_class_id
         data_type: varchar
