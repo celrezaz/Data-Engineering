@@ -16,6 +16,7 @@ ventas as (
 dim_rep as (
     select *
     from {{ ref('dim_repventas') }}
+    qualify row_number() over (partition by sales_rep_id order by valid_from desc) = 1
 ),
 
 dim_fecha as (
@@ -39,7 +40,7 @@ fact as (
 
     from objetivos o        
     left join dim_rep r
-        on  o.sales_rep_id = r.sales_rep_id
+        on o.sales_rep_id = r.sales_rep_id
     left join dim_fecha f
         on o.mes_id = f.mes_id
     left join ventas v
