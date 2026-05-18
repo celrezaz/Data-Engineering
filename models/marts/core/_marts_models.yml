@@ -390,7 +390,9 @@ models:
       - name: beneficio_total
         data_type: number
         description: "Beneficio real del representante en ese mes (puede ser null si no hay ventas)"
+        
 
       - name: pct_cumplimiento
         data_type: number
-        description: "Porcentaje de cumplimiento del objetivo (ventas_totales / objective_sales * 100). Null si el objetivo es 0 o no hay ventas"
+        description: "Porcentaje de cumplimiento del objetivo (ventas_totales / objective_sales * 100)"
+        
