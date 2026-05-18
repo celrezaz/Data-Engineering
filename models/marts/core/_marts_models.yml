@@ -1,0 +1,396 @@
+version: 2
+
+models:
+
+  - name: dim_cliente
+    description: "Dimensión de clientes"
+    columns:
+      - name: customer_id
+        data_type: varchar
+        description: "PK del cliente"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: customer_name
+        data_type: varchar
+        description: "Nombre del cliente"
+        data_tests:
+          - not_null
+
+      - name: country
+        data_type: varchar
+        description: "País del cliente"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['Germany', 'Poland', 'Unknown']
+
+      - name: city
+        data_type: varchar
+        description: "Ciudad del cliente"
+        data_tests:
+          - not_null
+
+      - name: latitude
+        data_type: number
+        description: "Latitud geográfica"
+
+      - name: longitude
+        data_type: number
+        description: "Longitud geográfica"
+
+
+  - name: dim_distribuidora
+    description: "Dimensión de distribuidoras farmacéuticas"
+    columns:
+      - name: distributor_id
+        data_type: varchar
+        description: "PK de la distribuidora"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: distributor
+        data_type: varchar
+        description: "Nombre de la distribuidora"
+        data_tests:
+          - not_null
+
+
+  - name: dim_fecha
+    description: "Dimensión de fechas con atributos temporales"
+    columns:
+      - name: fecha
+        data_type: date
+        description: "PK - Fecha completa"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: mes_id
+        data_type: varchar
+        description: "Identificador del mes"
+        data_tests:
+          - not_null
+
+      - name: year
+        data_type: number
+        description: "Año"
+        data_tests:
+          - not_null
+
+      - name: trimestre
+        data_type: varchar
+        description: "Trimestre (T1/T2/T3/T4)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['T1', 'T2', 'T3', 'T4']
+
+      - name: estacion
+        data_type: varchar
+        description: "Estación del año"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Primavera', 'Verano', 'Otoño', 'Invierno']
+
+
+  - name: dim_producto
+    description: "Dimensión de productos farmacéuticos con SCD tipo 2"
+    columns:
+      - name: sk_product
+        data_type: varchar
+        description: "SK surrogate (PK del SCD2)"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: product_id
+        data_type: varchar
+        description: "NK natural key del producto"
+        data_tests:
+          - not_null
+
+      - name: product_name
+        data_type: varchar
+        description: "Nombre del producto"
+        data_tests:
+          - not_null
+
+      - name: product_class
+        data_type: varchar
+        description: "Clase del producto"
+        data_tests:
+          - not_null
+
+      - name: precio_coste
+        data_type: number
+        description: "Precio de coste"
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: precio_venta
+        data_type: number
+        description: "Precio de venta"
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments: 
+                min_value: 0
+
+      - name: valid_from
+        data_type: timestamp_ntz
+        description: "Inicio de vigencia del registro"
+        data_tests:
+          - not_null
+
+      - name: valid_to
+        data_type: timestamp_ntz
+        description: "Fin de vigencia (null = registro activo)"
+
+      - name: is_current
+        data_type: boolean
+        description: "Indica si es el registro activo del producto"
+        data_tests:
+          - not_null
+
+
+  - name: dim_repventas
+    description: "Dimensión de representantes de ventas con SCD tipo 2"
+    columns:
+      - name: sk_sales_rep
+        data_type: varchar
+        description: "SK surrogate (PK del SCD2)"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: sales_rep_id
+        data_type: varchar
+        description: "NK natural key del representante"
+        data_tests:
+          - not_null
+
+      - name: name_sales_rep
+        data_type: varchar
+        description: "Nombre del representante"
+        data_tests:
+          - not_null
+
+      - name: sales_team
+        data_type: varchar
+        description: "Equipo comercial"
+        data_tests:
+          - not_null
+
+      - name: manager
+        data_type: varchar
+        description: "Manager del representante"
+        data_tests:
+          - not_null
+
+      - name: valid_from
+        data_type: date
+        description: "Inicio de vigencia"
+        data_tests:
+          - not_null
+
+      - name: valid_to
+        data_type: date
+        description: "Fin de vigencia (null = registro activo)"
+
+      - name: is_current
+        data_type: boolean
+        description: "Indica si es el registro activo del representante"
+        data_tests:
+          - not_null
+
+
+  - name: dim_subcanal
+    description: "Dimensión de subcanales comerciales"
+    columns:
+      - name: subchannel_id
+        data_type: varchar
+        description: "PK del subcanal"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: subchannel
+        data_type: varchar
+        description: "Nombre del subcanal"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['Government', 'Retail', 'Institution', 'Private', 'Unknown']
+
+      - name: channel
+        data_type: varchar
+        description: "Canal al que pertenece el subcanal"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: ['Pharmacy', 'Hospital', 'Unknown']
+
+
+  - name: fact_ventas
+    description: "Tabla de hechos de ventas a nivel de línea de venta"
+    columns:
+
+      - name: linea_venta_id
+        data_type: varchar
+        description: "Identificador único de la línea de venta (PK de la fact)"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: venta_id
+        data_type: varchar
+        description: "Identificador del pedido o venta agrupadora, una venta puede tener varias líneas"
+        data_tests:
+          - not_null
+
+      - name: sk_product
+        data_type: varchar
+        description: "Surrogate key del producto (FK a dim_producto, SCD2)"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_producto')
+                field: sk_product
+
+      - name: sk_sales_rep
+        data_type: varchar
+        description: "Surrogate key del representante de ventas (FK a dim_repventas, SCD2)"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_repventas')
+                field: sk_sales_rep
+
+      - name: customer_id
+        data_type: varchar
+        description: "ID del cliente (FK a dim_cliente)"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_cliente')
+                field: customer_id
+
+      - name: subchannel_id
+        data_type: varchar
+        description: "ID del subcanal de venta (FK a dim_subcanal)"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_subcanal')
+                field: subchannel_id
+
+      - name: distributor_id
+        data_type: varchar
+        description: "ID de la distribuidora (FK a dim_distribuidora)"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_distribuidora')
+                field: distributor_id
+
+      - name: fecha
+        data_type: date
+        description: "Fecha de la venta (FK a dim_fecha)"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_fecha')
+                field: fecha
+
+      - name: mes_id
+        data_type: varchar
+        description: "Identificador del mes derivado de dim_fecha"
+        data_tests:
+          - not_null
+
+      - name: quantity
+        data_type: number
+        description: "Cantidad de unidades vendidas en la línea"
+        data_tests:
+          - not_null
+
+      - name: ventas_totales
+        data_type: number
+        description: "Importe total de la venta, calculado como precio_venta × quantity"
+        data_tests:
+          - not_null
+
+      - name: beneficio_total
+        data_type: number
+        description: "Beneficio bruto de la línea, calculado como (precio_venta - precio_coste) × quantity"
+        data_tests:
+          - not_null
+
+
+  - name: fact_objetivos
+    description: "Tabla de hechos de objetivos de ventas por representante y mes"
+    columns:
+
+      - name: objetivo_id
+        data_type: varchar
+        description: "Identificador único del objetivo (PK)"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: sk_sales_rep
+        data_type: varchar
+        description: "Surrogate key del representante (FK a dim_repventas, SCD2). Puede ser null si el rep no existe en dim_repventas"
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_repventas')
+                field: sk_sales_rep
+
+      - name: mes_id
+        data_type: varchar
+        description: "Identificador del mes del objetivo (FK a dim_fecha)"
+        data_tests:
+          - not_null
+
+      - name: sales_rep_id
+        data_type: varchar
+        description: "Natural key del representante de ventas"
+        data_tests:
+          - not_null
+
+      - name: objective_sales
+        data_type: number
+        description: "Objetivo de ventas marcado para el representante en ese mes"
+        data_tests:
+          - not_null
+
+      - name: ventas_totales
+        data_type: number
+        description: "Ventas reales del representante en ese mes (puede ser null si no hay ventas)"
+
+      - name: beneficio_total
+        data_type: number
+        description: "Beneficio real del representante en ese mes (puede ser null si no hay ventas)"
+
+      - name: pct_cumplimiento
+        data_type: number
+        description: "Porcentaje de cumplimiento del objetivo (ventas_totales / objective_sales * 100). Null si el objetivo es 0 o no hay ventas"

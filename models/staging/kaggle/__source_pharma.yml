@@ -1,0 +1,156 @@
+version: 2
+
+sources:
+  - name: kaggle
+    description: "Datos en bruto cargados desde Kaggle sobre ventas de CroceaPharma (empresa farmacéutica)"
+    schema: kaggle
+    database: DEV_BRONZE_DB
+
+    tables:
+      - name: farmacia
+        description: "Tabla de transacciones de ventas farmacéuticas. Contiene información de clientes, productos, canal de venta, fuerza de ventas y métricas económicas"
+        columns:
+          - name: id_venta
+            data_type: varchar
+            description: "Identificador único de la transacción de venta"
+            data_tests:
+              - not_null
+
+          - name: distributor
+            data_type: varchar
+            description: "Nombre del distribuidor que gestiona la venta"
+
+          - name: customer_name
+            data_type: varchar
+            description: "Nombre del cliente (farmacia/hospital)"
+            data_tests:
+              - not_null:
+                  config:
+                    severity: warn
+
+          - name: city
+            data_type: varchar
+            description: "Ciudad donde se encuentra el cliente"
+
+          - name: country
+            data_type: varchar
+            description: "País donde se realiza la venta (Alemania/Polonia)"
+
+          - name: latitude
+            data_type: number
+            description: "Latitud geográfica de la ubicación del cliente"
+
+          - name: longitude
+            data_type: number
+            description: "Longitud geográfica de la ubicación del cliente"
+
+          - name: channel
+            data_type: varchar
+            description: "Canal de distribución principal (Hospital/Farmacia)"
+
+          - name: subchannel
+            data_type: varchar
+            description: "Subcanal de distribución dentro del canal principal"
+
+          - name: product_name
+            data_type: varchar
+            description: "Nombre comercial del producto farmacéutico vendido"
+            data_tests:
+              - not_null:
+                  config:
+                    severity: warn
+
+          - name: product_class
+            data_type: varchar
+            description: "Categoría o clase terapéutica del producto"
+
+          - name: quantity
+            data_type: number
+            description: "Unidades vendidas en la transacción"
+            data_tests:
+              - not_null
+
+          - name: precio_coste
+            data_type: number
+            description: "Precio de coste unitario del producto"
+
+          - name: precio_venta
+            data_type: number
+            description: "Precio de venta unitario del producto"
+            data_tests:
+              - not_null
+            
+
+          - name: sales
+            data_type: number
+            description: "Importe total de la venta calculado en fuente (quantity * precio_venta)"
+
+          - name: month
+            data_type: varchar
+            description: "Mes de la transacción en formato texto"
+
+          - name: year
+            data_type: number
+            description: "Año de la transacción"
+
+          - name: fecha
+            data_type: date
+            description: "Fecha completa de la transacción"
+            data_tests:
+              - not_null:
+                  config: 
+                    severity: warn
+
+          - name: name_sales_rep
+            data_type: varchar
+            description: "Nombre del representante de ventas responsable"
+              
+
+          - name: manager
+            data_type: varchar
+            description: "Nombre del manager del equipo de ventas"
+
+          - name: sales_team
+            data_type: varchar
+            description: "Equipo de ventas al que pertenece el representante"
+
+      - name: objectives
+        description: "Tabla de objetivos de ventas por representante, equipo y periodo"
+        columns:
+          - name: name_sales_rep
+            data_type: varchar
+            description: "Nombre del representante de ventas"
+            data_tests:
+              - not_null: 
+                  config: 
+                    severity: warn
+
+          - name: sales_team
+            data_type: varchar
+            description: "Equipo de ventas al que pertenece el representante"
+            
+
+          - name: month
+            data_type: varchar
+            description: "Mes del objetivo en formato texto"
+            data_tests:
+              - not_null: 
+                  config: 
+                    severity: warn
+            
+
+
+          - name: year
+            data_type: number
+            description: "Año del objetivo"
+            data_tests:
+              - not_null: 
+                  config: 
+                    severity: warn
+            
+
+          - name: objective
+            data_type: varchar
+            description: "Importe objetivo de ventas para ese periodo. Almacenado como varchar, requiere casteo en Silver"
+            data_tests:
+              - not_null

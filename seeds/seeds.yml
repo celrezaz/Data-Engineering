@@ -1,0 +1,54 @@
+version: 2
+
+seeds:
+  - name: canonical_managers
+    description: "Tabla de referencia con los nombres canónicos de managers y sus equipos de ventas. Se usa para corregir typos y normalizar nombres en la capa de staging"
+    columns:
+      - name: sales_team
+        data_type: varchar
+        description: "Nombre canónico del equipo de ventas"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: manager
+        data_type: varchar
+        description: "Nombre canónico del manager responsable del equipo"
+        data_tests:
+          - not_null
+
+  - name: canonical_sales_reps
+    description: "Tabla de referencia con los nombres canónicos de los representantes de ventas. Se usa para normalizar nombres mediante fuzzy matching en la capa de staging"
+    columns:
+      - name: name
+        data_type: varchar
+        description: "Nombre canónico del representante de ventas"
+        data_tests:
+          - not_null
+          - unique
+
+  - name: canonical_product_class
+    description: "Tabla de referencia con la clasificación canónica de productos farmacéuticos. Se usa para enriquecer y corregir la clase de producto en la capa de staging"
+    columns:
+      - name: product_name
+        data_type: varchar
+        description: "Nombre canónico del producto farmacéutico"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: product_class
+        data_type: varchar
+        description: "Clase o categoría terapéutica canónica del producto"
+        data_tests:
+          - not_null
+
+  - name: canonical_distributor
+    description: "Seed con los nombres canónicos de las distribuidoras farmacéuticas. Se usa para estandarizar nombres en la capa de staging mediante join por nombre de distribuidora"
+    columns:
+      - name: distributor
+        data_type: varchar
+        description: "Nombre canónico de la distribuidora"
+        data_tests:
+          - unique
+          - not_null
