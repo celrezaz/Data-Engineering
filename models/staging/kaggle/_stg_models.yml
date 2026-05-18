@@ -90,11 +90,13 @@ models:
 
 
   - name: stg_pharma__clase
-    description: "Vista con la clasificación de productos farmacéuticos"
+    description: "Vista con la clase del producto farmacéutico."
     columns:
       - name: product_class
         data_type: varchar
         description: "Nombre de la clase o categoría del producto"
+        data_tests:
+          - not_null
 
       - name: product_class_id
         data_type: varchar
@@ -141,6 +143,9 @@ models:
       - name: distributor
         data_type: varchar
         description: "Nombre de la distribuidora"
+        data_tests:
+          - not_null
+          
 
       - name: distributor_id
         data_type: varchar
@@ -199,6 +204,8 @@ models:
       - name: manager
         data_type: varchar
         description: "Nombre del manager comercial"
+        data_tests:
+          - not_null
 
       - name: manager_id
         data_type: varchar
@@ -240,7 +247,7 @@ models:
           - not_null
 
   - name: stg_pharma__producto
-    description: "Vista con productos farmacéuticos y precios"
+    description: "Vista con productos farmacéuticos y sus precios históricos. Implementa SCD Type 2 inferido desde los datos de ventas. Detecta cambios de precio por producto usando la fecha mínima de cada combinación producto+precio como valid_from, y LEAD para calcular el valid_to. La clase del producto se enriquece mediante COALESCE entre la propia fuente y la seed canonical_product_class. El primer registro de cada producto arranca en la fecha de la primera venta registrada."
     columns:
 
       - name: sk_product

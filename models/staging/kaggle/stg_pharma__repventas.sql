@@ -43,3 +43,4 @@ select distinct
     sales_team_id
     
 from renamed
+order by name_sales_rep

@@ -1,3 +1,8 @@
+{{ config(
+    materialized='incremental',
+    unique_key='linea_venta_id',
+    incremental_strategy='merge') }}
+
 with ventas as (
     select
         linea_venta_id,
@@ -75,11 +80,14 @@ fact as (
         v.linea_venta_id,
         v.venta_id,
         p.sk_product,
+        p.product_id,
         r.sk_sales_rep,
+        r.sales_rep_id,
         c.customer_id,
         s.subchannel_id,
         d.distributor_id,
         f.fecha,
+        f.mes_id,
         v.quantity,
         p.precio_venta * v.quantity                    as ventas_totales,
         (p.precio_venta - p.precio_coste) * v.quantity as beneficio_total
@@ -109,4 +117,3 @@ fact as (
 )
 
 select * from fact
-order by linea_venta_id asc

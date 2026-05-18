@@ -4,7 +4,7 @@ sources:
   - name: kaggle
     description: "Datos en bruto cargados desde Kaggle sobre ventas de CroceaPharma (empresa farmacéutica)"
     schema: kaggle
-    database: "{{ env_var('DBT_ENVIRONMENTS', 'FAIL') }}_BRONZE_DB"
+    database: DEV_BRONZE_DB
 
     tables:
       - name: farmacia
@@ -83,7 +83,7 @@ sources:
 
           - name: sales
             data_type: number
-            description: "Importe total de la venta (quantity * precio_venta)"
+            description: "Importe total de la venta calculado en fuente (quantity * precio_venta)"
 
           - name: month
             data_type: varchar

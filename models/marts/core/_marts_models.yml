@@ -147,14 +147,20 @@ models:
                 min_value: 0
 
       - name: valid_from
-        data_type: date
+        data_type: timestamp_ntz
         description: "Inicio de vigencia del registro"
         data_tests:
           - not_null
 
       - name: valid_to
-        data_type: date
+        data_type: timestamp_ntz
         description: "Fin de vigencia (null = registro activo)"
+
+      - name: is_current
+        data_type: boolean
+        description: "Indica si es el registro activo del producto"
+        data_tests:
+          - not_null
 
 
   - name: dim_repventas
@@ -192,13 +198,13 @@ models:
           - not_null
 
       - name: valid_from
-        data_type: timestamp_ntz
+        data_type: date
         description: "Inicio de vigencia"
         data_tests:
           - not_null
 
       - name: valid_to
-        data_type: timestamp_ntz
+        data_type: date
         description: "Fin de vigencia (null = registro activo)"
 
       - name: is_current
@@ -244,93 +250,147 @@ models:
       - name: linea_venta_id
         data_type: varchar
         description: "Identificador único de la línea de venta (PK de la fact)"
-        tests:
+        data_tests:
           - not_null
           - unique
 
       - name: venta_id
         data_type: varchar
         description: "Identificador del pedido o venta agrupadora, una venta puede tener varias líneas"
-        tests:
+        data_tests:
           - not_null
 
       - name: sk_product
         data_type: varchar
         description: "Surrogate key del producto (FK a dim_producto, SCD2)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              arguments: 
+              arguments:
                 to: ref('dim_producto')
                 field: sk_product
 
       - name: sk_sales_rep
         data_type: varchar
         description: "Surrogate key del representante de ventas (FK a dim_repventas, SCD2)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              arguments: 
+              arguments:
                 to: ref('dim_repventas')
                 field: sk_sales_rep
 
       - name: customer_id
         data_type: varchar
         description: "ID del cliente (FK a dim_cliente)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              arguments: 
+              arguments:
                 to: ref('dim_cliente')
                 field: customer_id
 
       - name: subchannel_id
         data_type: varchar
         description: "ID del subcanal de venta (FK a dim_subcanal)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              arguments: 
+              arguments:
                 to: ref('dim_subcanal')
                 field: subchannel_id
 
       - name: distributor_id
         data_type: varchar
         description: "ID de la distribuidora (FK a dim_distribuidora)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              arguments: 
+              arguments:
                 to: ref('dim_distribuidora')
                 field: distributor_id
 
       - name: fecha
         data_type: date
         description: "Fecha de la venta (FK a dim_fecha)"
-        tests:
+        data_tests:
           - not_null
           - relationships:
-              arguments: 
+              arguments:
                 to: ref('dim_fecha')
                 field: fecha
 
+      - name: mes_id
+        data_type: varchar
+        description: "Identificador del mes derivado de dim_fecha"
+        data_tests:
+          - not_null
 
       - name: quantity
         data_type: number
         description: "Cantidad de unidades vendidas en la línea"
-        tests:
+        data_tests:
           - not_null
 
       - name: ventas_totales
         data_type: number
         description: "Importe total de la venta, calculado como precio_venta × quantity"
-        tests:
+        data_tests:
           - not_null
-
 
       - name: beneficio_total
         data_type: number
         description: "Beneficio bruto de la línea, calculado como (precio_venta - precio_coste) × quantity"
-        tests:
+        data_tests:
           - not_null
 
+
+  - name: fact_objetivos
+    description: "Tabla de hechos de objetivos de ventas por representante y mes"
+    columns:
+
+      - name: objetivo_id
+        data_type: varchar
+        description: "Identificador único del objetivo (PK)"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: sk_sales_rep
+        data_type: varchar
+        description: "Surrogate key del representante (FK a dim_repventas, SCD2). Puede ser null si el rep no existe en dim_repventas"
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_repventas')
+                field: sk_sales_rep
+
+      - name: mes_id
+        data_type: varchar
+        description: "Identificador del mes del objetivo (FK a dim_fecha)"
+        data_tests:
+          - not_null
+
+      - name: sales_rep_id
+        data_type: varchar
+        description: "Natural key del representante de ventas"
+        data_tests:
+          - not_null
+
+      - name: objective_sales
+        data_type: number
+        description: "Objetivo de ventas marcado para el representante en ese mes"
+        data_tests:
+          - not_null
+
+      - name: ventas_totales
+        data_type: number
+        description: "Ventas reales del representante en ese mes (puede ser null si no hay ventas)"
+
+      - name: beneficio_total
+        data_type: number
+        description: "Beneficio real del representante en ese mes (puede ser null si no hay ventas)"
+
+      - name: pct_cumplimiento
+        data_type: number
+        description: "Porcentaje de cumplimiento del objetivo (ventas_totales / objective_sales * 100). Null si el objetivo es 0 o no hay ventas"
