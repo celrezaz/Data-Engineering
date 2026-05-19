@@ -5,29 +5,29 @@ macros:
     description: "Aplica formato título a un campo de texto — primera letra de cada palabra en mayúscula y elimina espacios. Se usa para estandarizar nombres de distribuidoras y representantes de ventas"
     arguments:
       - name: col
-        type: varchar
+        type: string
         description: "Nombre de la columna o expresión SQL sobre la que aplicar el formato"
 
   - name: numero_mes
     description: "Convierte el nombre o número de un mes en su valor numérico entero (1-12). Acepta formatos en inglés: nombre completo (January), abreviado (Jan) o numérico como texto (1). Devuelve -1 si el valor no es reconocido"
     arguments:
       - name: col
-        type: varchar
+        type: string
         description: "Nombre de la columna que contiene el mes en formato texto o numérico"
 
   - name: mes_code
     description: "Genera un identificador de mes en formato YYYYMM concatenando el año y el mes con cero a la izquierda. Se usa para crear mes_id en los modelos de staging y dimensión de tiempo"
     arguments:
       - name: year_col
-        type: number
+        type: integer
         description: "Nombre de la columna que contiene el año"
       - name: month_col
-        type: number
+        type: integer
         description: "Nombre de la columna que contiene el número de mes (1-12)"
 
   - name: limpiar_nombres
     description: "Normaliza cadenas de texto para comparación fuzzy — convierte a minúsculas, elimina tildes y caracteres especiales, sustituye caracteres similares a letras (0→o, 1→l, 3→e) y colapsa espacios múltiples. Se usa como preprocesado antes de aplicar JAROWINKLER_SIMILARITY"
     arguments:
       - name: col
-        type: varchar
+        type: string
         description: "Nombre de la columna o expresión SQL a normalizar"
