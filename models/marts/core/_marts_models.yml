@@ -244,7 +244,7 @@ models:
 
 
   - name: fact_ventas
-    description: "Tabla de hechos de ventas a nivel de línea de venta"
+    description: "Tabla de hechos de ventas a nivel de línea de venta. Modelo incremental (merge)"
     columns:
 
       - name: linea_venta_id
