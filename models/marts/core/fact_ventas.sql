@@ -117,3 +117,8 @@ fact as (
 )
 
 select * from fact
+
+{% if is_incremental() %}
+where fecha > (select (max(fecha)) from {{ this }} )
+
+{% endif %}
