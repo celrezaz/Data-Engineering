@@ -43,12 +43,4 @@ seeds:
         data_tests:
           - not_null
 
-  - name: canonical_distributor
-    description: "Seed con los nombres canónicos de las distribuidoras farmacéuticas. Se usa para estandarizar nombres en la capa de staging mediante join por nombre de distribuidora"
-    columns:
-      - name: distributor
-        data_type: varchar
-        description: "Nombre canónico de la distribuidora"
-        data_tests:
-          - unique
-          - not_null
+  
