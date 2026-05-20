@@ -11,16 +11,14 @@ source as (
             when id_venta = 'V23419' then 'Bravo'
             when lower(trim(TO_VARCHAR(sales_team))) in ('na', '') then 'Unknown'
             else COALESCE(sales_team, 'Unknown')
-        end as sales_team,
-        fecha                                    
+        end as sales_team                                  
     from {{ source('kaggle', 'farmacia') }}
 
     union all
 
     select
         'Unknown' as name_sales_rep,
-        'Unknown' as sales_team,
-        NULL as fecha                            
+        'Unknown' as sales_team                          
 
 ),
 

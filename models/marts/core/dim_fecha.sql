@@ -48,3 +48,13 @@ select
     trimestre,
     estacion
 from final_dim
+
+union all
+
+select
+    '1900-01-01'::date  as fecha,
+    'Unknown'           as mes_id,
+    'Unknown'           as month,
+    1900                as year,
+    'Unknown'           as trimestre,
+    'Unknown'           as estacion

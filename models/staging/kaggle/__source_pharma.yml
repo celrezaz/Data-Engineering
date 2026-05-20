@@ -100,6 +100,12 @@ sources:
               - not_null:
                   config: 
                     severity: warn
+              - dbt_expectations.expect_column_values_to_be_between:
+                  arguments:
+                    min_value: "'2010-01-01'::date"
+                    max_value: "'2030-12-31'::date"
+                  config: 
+                    severity: warn
 
           - name: name_sales_rep
             data_type: varchar
