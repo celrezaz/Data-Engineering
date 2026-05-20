@@ -88,7 +88,7 @@ models:
           - not_null
           - accepted_values:
               arguments: 
-                values: ['T1', 'T2', 'T3', 'T4']
+                values: ['T1', 'T2', 'T3', 'T4', 'Unknown']
 
       - name: estacion
         data_type: varchar
@@ -97,7 +97,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['Primavera', 'Verano', 'Otoño', 'Invierno']
+                values: ['Primavera', 'Verano', 'Otoño', 'Invierno', 'Unknown']
 
 
   - name: dim_producto
