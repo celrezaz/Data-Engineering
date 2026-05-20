@@ -98,10 +98,11 @@ fact as (
         and v.fecha >= p.valid_from
         and (p.valid_to is null or v.fecha <= p.valid_to)
     
+
     left join dim_rep r
         on v.sales_rep_id = r.sales_rep_id
         and v.fecha >= r.valid_from
-        and (r.valid_to is null or v.fecha <= r.valid_to)
+        and (r.valid_to is null or v.fecha < r.valid_to)
 
     left join dim_cliente c
         on v.customer_id   = c.customer_id
@@ -117,3 +118,9 @@ fact as (
 )
 
 select * from fact
+
+{% if is_incremental() %}
+where fecha > (select (max(fecha)) from {{ this }} )
+   or fecha = '1900-01-01'::date
+
+{% endif %}

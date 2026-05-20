@@ -54,7 +54,7 @@ source as (
         or JAROWINKLER_SIMILARITY(
             lower(trim(REGEXP_REPLACE(TO_VARCHAR(o.name_sales_rep), '[^a-zA-Z0-9 ]', ''))),
             lower(c.name)
-        ) > 0.85
+        ) > 75
     )
 
 ),

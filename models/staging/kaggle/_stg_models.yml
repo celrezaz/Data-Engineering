@@ -237,7 +237,7 @@ models:
     columns:
       - name: country
         data_type: varchar
-        description: "Nombre del país: Germany/Poland"
+        description: "Nombre del país"
 
       - name: country_id
         data_type: varchar

@@ -70,16 +70,18 @@ rangos as (
 enriched as (
     select
         r.product_name,
-        COALESCE(spc.product_class, seed.product_class)               as product_class,
+        COALESCE(seed.product_class, spc.product_class)               as product_class,
         r.precio_coste,
         r.precio_venta,
         r.valid_from,
         r.valid_to
     from rangos r
     left join source_producto_class spc
-        on lower(trim(r.product_name)) = lower(trim(spc.product_name))
+        on lower(trim(regexp_replace(r.product_name, '[^a-zA-Z0-9 ]', '')))
+         = lower(trim(regexp_replace(spc.product_name, '[^a-zA-Z0-9 ]', '')))
     left join seed
-        on lower(trim(r.product_name)) = lower(trim(seed.product_name))
+        on lower(trim(regexp_replace(r.product_name, '[^a-zA-Z0-9 ]', '')))
+         = lower(trim(regexp_replace(seed.product_name, '[^a-zA-Z0-9 ]', '')))
 ),
 
 cleaned as (
