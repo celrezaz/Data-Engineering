@@ -18,7 +18,6 @@ with ventas as (
 
     {% if is_incremental() %}
     where fecha > (select max(fecha) from {{ this }})
-       or fecha = '1900-01-01'::date
     {% endif %}
 ), 
 
