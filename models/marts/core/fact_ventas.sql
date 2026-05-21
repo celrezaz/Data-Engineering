@@ -15,7 +15,12 @@ with ventas as (
         sales_rep_id,
         quantity
     from {{ ref('stg_pharma__ventas') }}
-),
+
+    {% if is_incremental() %}
+    where fecha > (select max(fecha) from {{ this }})
+       or fecha = '1900-01-01'::date
+    {% endif %}
+), 
 
 dim_producto as (
     select
